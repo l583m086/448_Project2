@@ -22,6 +22,17 @@ const mapToGrid = (board) => {
     })
 }
 
+const toggleColor = (cell, color) => {
+    let cellElem = document.querySelector('#' + cell.id);
+    cellElem.onclick = () => {
+        if (cellElem.style.backgroundColor !== color) {
+            cellElem.style = `background-color: ${color};`;
+        } else {
+            cellElem.style = "";
+        }
+    }
+}
+
 // Allows for the execution of a callback function
 // on every single grid within the Game Table
 const execOnGrid = (fn) => {
