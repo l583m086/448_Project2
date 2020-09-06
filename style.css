@@ -11,6 +11,25 @@
     color: black;
 }
 
+#sideBar {
+    width: 20%;
+}
+
+#gameContainer {
+    width: 100%;
+}
+
+.centered {
+    text-align: center;
+    width: auto;
+    margin: 0 auto;
+}
+
+#flexContainer {
+    display: flex;
+    margin: 2.5% auto;
+}
+
 #game-grid {
     border: 2px solid black;
     margin: 0px auto;
