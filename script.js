@@ -14,7 +14,7 @@ let player1Board = [
 // Takes a Player's board representation and maps the values
 // onto the HTML Table
 const mapToGrid = (board) => {
-    let gameGrid = document.querySelector("#game-grid");
+    let gameGrid = document.querySelector("#game-grid-1");
     board.forEach((row, index1) => {
         row.forEach((cell, index2) => {
             gameGrid.children[0].children[index1].children[index2].innerHTML = cell;
@@ -35,9 +35,9 @@ const toggleColor = (cell, color) => {
 
 // Allows for the execution of a callback function
 // on every single grid within the Game Table
-const execOnGrid = (fn) => {
+const execOnGrid = (boardId, fn) => {
     console.log(`Executing ${fn.name}`)
-    let gameGrid = document.querySelector("#game-grid");
+    let gameGrid = document.querySelector(boardId);
     for (let row of gameGrid.children[0].children) {
         for (let cell of row.children) {
             fn(cell);
@@ -49,4 +49,30 @@ const execOnGrid = (fn) => {
 const startGame = () => {
     console.log("Starting Game");
     mapToGrid(player1Board);
+}
+
+/*
+* Method: gameOver
+* Pre: None
+* Params: winnerName: "The winners board"
+* Post: Game is reset and winner is announced
+*/
+const gameOver = (winnerName) => {
+    clearBoard("#game-grid-1");
+    console.log(`Game Won by: ${winnerName}`);
+    alert(`Game Won by: ${winnerName}`)
+}
+
+/*
+* Method: clearBoard
+* Pre: None
+* Params: boardName: "Name of the board being cleared"
+* Post: The game board cell values, styles, and onclicks are removed
+*/
+const clearBoard = (boardName) => {
+    execOnGrid(boardName, (cell) => {
+        cell.innerHTML = "";
+        cell.style = "";
+        cell.onclick = "";
+    })
 }

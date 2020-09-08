@@ -13,15 +13,16 @@
     <div id="flexContainer">
         <div id="sideBar">
             <button onclick="startGame()">Start Game</button>
-            <button onclick="execOnGrid((cell) => {
+            <button onclick="execOnGrid('#game-grid-1', (cell) => {
                 console.log(`Cell ID: ${cell.id}\nCell Value: ${document.querySelector('#' + cell.id).innerHTML}`)
             })">
                 Trial
             </button>
-            <button onclick="execOnGrid((cell) => {toggleColor(cell, 'blue')})">Toggle Color</button>
+            <button onclick="execOnGrid('#game-grid-1', (cell) => {toggleColor(cell, 'blue')})">Toggle Color</button>
+            <button onclick="gameOver()">Game Over Test</button>
         </div>
         <div id="gameContainer">
-            <table id="game-grid">
+            <table id="game-grid-1">
                 <tbody>
                     <tr id="row-1">
                         <td id="cell-1-1"></td>
