@@ -34,6 +34,7 @@
 #game-grid-1 {
     width: 450px;
     border: 2px solid black;
+    margin: auto;
 }
 
 #game-grid-1 td {
@@ -51,6 +52,7 @@
 #game-grid-2 {
     width: 450px;
     border: 2px solid black;
+    margin: auto;
 }
 
 #game-grid-2 td {
