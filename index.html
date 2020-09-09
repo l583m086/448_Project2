@@ -18,11 +18,16 @@
             })">
                 Trial
             </button>
-            <button onclick="execOnGrid('#game-grid-1', (cell) => {toggleColor(cell, 'blue')})">Toggle Color</button>
+            <button onclick="(() => {
+                console.log('Toggling Colors');
+                execOnGrid('#game-grid-1', (cell) => {toggleColor(cell, 'blue')});
+                execOnGrid('#game-grid-2', (cell) => {toggleColor(cell, 'purple')});
+            })()">Toggle Color</button>
             <button onclick="gameOver()">Game Over Test</button>
         </div>
         <div id="gameContainer">
-            <table id="game-grid-1">
+            <h2>Player 1</h2>
+            <table id="game-grid-1" class="game-grid">
                 <tbody>
                     <tr id="row-A-1">
                         <td id="cell-A-1-1"></td>
@@ -125,7 +130,8 @@
                     </tr>
                 </tbody>
             </table>
-            <table id="game-grid-2">
+            <h2>Player 2</h2>
+            <table id="game-grid-2" class="game-grid">
                 <tbody>
                     <tr id="row-B-1">
                         <td id="cell-B-1-1"></td>
