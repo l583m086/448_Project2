@@ -76,3 +76,41 @@ const clearBoard = (boardName) => {
         cell.onclick = "";
     })
 }
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+   
+    /*Fire Command
+    
+    - Waiting for what the states of each board is (Whoever is working on it)
+    Adding even listeners to every table and cell when attacking 
+    Need name of gameboard2 to contiue then change turns 
+    
+    const fireturn =(playerboard) => 
+    {}
+    */
+    
+    let gameboard = document.getElementById("game-grid-1");
+    for (let i = 0; i < gameboard.rows.length; i++) 
+    {
+      for (let j = 0; j < gameboard.rows[i].cells.length; j++) 
+        {
+            gameboard.rows[i].cells[j].addEventListener("click",(cell) =>
+            {
+                console.log("clicked on this cell");
+                if(gameboard.rows[i].cells[j].innerHTML == "1") //Will be S if its a ship using 1 to test 
+                {
+                    gameboard.rows[i].cells[j].innerHTML = "HIT"; //WIll be changed to H if its a hit
+                }
+                else
+                {
+                    gameboard.rows[i].cells[j].innerHTML = "MISS"; //WIll be changed to H if its a hit
+                }
+            });
+           
+        }
+    
+    }
+
+    })
