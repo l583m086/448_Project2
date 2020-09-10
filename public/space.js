@@ -1,8 +1,8 @@
 const states = {
-    EMPTY: 0,
-    PLACED: 1,
-    MISS: 2,
-    HIT: 3
+    EMPTY: "Empty",
+    PLACED: "Ship",
+    MISS: "Miss",
+    HIT: "Hit"
 }
 
 export default class Space {
@@ -33,17 +33,17 @@ export default class Space {
     set state(state){
         switch(state){
             case states.PLACED:
-                m_state = states.PLACED
-                m_color = "grey"
+                this.m_state = states.PLACED
+                this.m_color = "grey"
             case states.MISS:
-                m_state = states.MISS
-                m_color = "white"
+                this.m_state = states.MISS
+                this.m_color = "white"
             case states.HIT:
-                m_state = states.HIT
-                m_color = "red"
+                this.m_state = states.HIT
+                this.m_color = "red"
             default:
-                m_state = states.EMPTY
-                m_color = "blue"
+                this.m_state = states.EMPTY
+                this.m_color = "blue"
         }
     }
 }
