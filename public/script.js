@@ -4,13 +4,14 @@ import Space from "./space.js"
 // Isaac: I marked the indices with x and y to make it clearer
 // X's go from left to right
 // Y's go from top to bottom 
-
-const newBoard = () => {
+// Coordinate not exactly what you think it is. To go South of board from top right you need to do +x and to go north -x and same for y +y to go right and -y to go left. 
+function newBoard() 
+{
     let board = []
-    for(let y=1; y<10; y++){
+    for(let y=0; y<9; y++){
         let row = []
-        for(let x=1; x<10; x++){
-            let space = new Space(x, y);
+        for(let x=0; x<9; x++){
+            let space = new Space(y, x);
             row.push(space)
         }
         board.push(row)
@@ -19,8 +20,11 @@ const newBoard = () => {
     return board
 }
 
-const player1Board = newBoard();
-const player2Board = newBoard();
+let player1Board = newBoard();
+let player2Board = newBoard();
+
+
+
 
 
 // Takes a Player's board representation and maps the values
@@ -31,7 +35,7 @@ const mapToGrid = (board, boardId) => {
     for(let i=0; i<9; i++){
         for(let j=0; j<9; j++){
             console.log(board[i][j].state)
-            gameGrid.children[0].children[i].children[j].innerHTML = board[i][j].coordinate.x+", " + board[i][j].coordinate.y;
+            gameGrid.children[0].children[i].children[j].innerHTML = board[i][j].coordinate.x+", " + board[i][j].coordinate.y + " (" + i + ","+ j + ")";
         }
     }
 }
@@ -63,6 +67,8 @@ const execOnGrid = (boardId, fn) => {
 const startGame = () => {
     console.log("Starting Game");
     mapToGrid(player1Board, "#game-grid-1");
+    player1Board[0][1].state = "Ship";
+    console.log(player1Board[0][1].state);
     mapToGrid(player2Board, "#game-grid-2");
     displayboard(player1Board,"#game-grid-1");
 }
@@ -161,29 +167,18 @@ const displayboard = (statebackboard,ID) =>
             {
                 gameboard1.rows[j].cells[i].innerHTML = "Ship";
             }
-            else if (statebackboard[j][i].state == "Empty")
+            if (statebackboard[j][i].state == "Empty")
             {
                 gameboard1.rows[j].cells[i].innerHTML = "~";
             }
-            else if (statebackboard[j][i].state == "Miss")
+            if (statebackboard[j][i].state == "Miss")
             {
                 gameboard1.rows[j].cells[i].innerHTML = "X";
             }
-            else if (statebackboard[j][i].state == "Hit")
+            if (statebackboard[j][i].state == "Hit")
             {
                 gameboard1.rows[j].cells[i].style.backgroundColor = "red"; 
             }
         }
     }
 }
-
-
-
-
-  
-
-
-
-
-
-

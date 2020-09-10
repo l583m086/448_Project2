@@ -35,15 +35,19 @@ export default class Space {
             case states.PLACED:
                 this.m_state = states.PLACED
                 this.m_color = "grey"
+                break;
             case states.MISS:
                 this.m_state = states.MISS
                 this.m_color = "white"
+                break;
             case states.HIT:
                 this.m_state = states.HIT
                 this.m_color = "red"
+                break;
             default:
                 this.m_state = states.EMPTY
                 this.m_color = "blue"
+                break; 
         }
     }
 }
