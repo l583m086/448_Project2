@@ -5,7 +5,7 @@ import Space from "./space.js"
 // X's go from left to right
 // Y's go from top to bottom 
 // Coordinate not exactly what you think it is. To go South of board from top right you need to do +x and to go north -x and same for y +y to go right and -y to go left. 
-function newBoard() 
+const newBoard = () =>
 {
     let board = []
     for(let y=0; y<9; y++){
@@ -23,9 +23,16 @@ function newBoard()
 let player1Board = newBoard();
 let player2Board = newBoard();
 
-
-
-
+//Given an x,y where 0 <= x,y < 9, and a state (back)board of Spaces, find the cooresponding Space for that coordinate on the board
+const findSpace = (x, y, board) => {
+    for(let row of board){
+        for(let cell of row){
+            if(cell.coordinate.x == x && cell.coordinate.y == y){
+                return cell
+            }
+        }
+    }
+}
 
 // Takes a Player's board representation and maps the values
 // onto the HTML Table
@@ -68,7 +75,7 @@ const startGame = () => {
     console.log("Starting Game");
     mapToGrid(player1Board, "#game-grid-1");
     player1Board[0][1].state = "Ship";
-    console.log(player1Board[0][1].state);
+    console.log(findSpace(2, 5, player1Board).coordinate);
     mapToGrid(player2Board, "#game-grid-2");
     displayboard(player1Board,"#game-grid-1");
 }
