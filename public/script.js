@@ -5,12 +5,11 @@ import Space from "./space.js"
 // X's go from left to right
 // Y's go from top to bottom 
 // Coordinate not exactly what you think it is. To go South of board from top right you need to do +x and to go north -x and same for y +y to go right and -y to go left. 
-const newBoard = () =>
-{
+const newBoard = () => {
     let board = []
-    for(let y=0; y<9; y++){
+    for (let y = 0; y < 9; y++) {
         let row = []
-        for(let x=0; x<9; x++){
+        for (let x = 0; x < 9; x++) {
             let space = new Space(y, x);
             row.push(space)
         }
@@ -25,9 +24,9 @@ let player2Board = newBoard();
 
 //Given an x,y where 0 <= x,y < 9, and a state (back)board of Spaces, find the cooresponding Space for that coordinate on the board
 const findSpace = (x, y, board) => {
-    for(let row of board){
-        for(let cell of row){
-            if(cell.coordinate.x == x && cell.coordinate.y == y){
+    for (let row of board) {
+        for (let cell of row) {
+            if (cell.coordinate.x == x && cell.coordinate.y == y) {
                 return cell
             }
         }
@@ -39,10 +38,10 @@ const findSpace = (x, y, board) => {
 const mapToGrid = (board, boardId) => {
     let gameGrid = document.querySelector(boardId);
 
-    for(let i=0; i<9; i++){
-        for(let j=0; j<9; j++){
+    for (let i = 0; i < 9; i++) {
+        for (let j = 0; j < 9; j++) {
             console.log(board[i][j].state)
-            gameGrid.children[0].children[i].children[j].innerHTML = board[i][j].coordinate.x+", " + board[i][j].coordinate.y + " (" + i + ","+ j + ")";
+            gameGrid.children[0].children[i].children[j].innerHTML = board[i][j].coordinate.x + ", " + board[i][j].coordinate.y + " (" + i + "," + j + ")";
         }
     }
 }
@@ -77,7 +76,7 @@ const startGame = () => {
     player1Board[0][1].state = "Ship";
     console.log(findSpace(2, 5, player1Board).coordinate);
     mapToGrid(player2Board, "#game-grid-2");
-    displayboard(player1Board,"#game-grid-1");
+    displayboard(player1Board, "#game-grid-1");
 }
 
 /*
@@ -122,7 +121,7 @@ document.addEventListener("DOMContentLoaded", function () {
     for (let i = 0; i < gameboard1.rows.length; i++) {
         for (let j = 0; j < gameboard1.rows[i].cells.length; j++) {
             gameboard1.rows[j].cells[i].addEventListener("click", (cell) => {
-                console.log(j,i);
+                console.log(j, i);
                 if (player1Board[j][i].state == "Ship") //Will be S if its a ship using 1 to test 
                 {
                     player1Board[j][i].state == "Hit";
@@ -141,10 +140,10 @@ document.addEventListener("DOMContentLoaded", function () {
     for (let i = 0; i < gameboard2.rows.length; i++) {
         for (let j = 0; j < gameboard2.rows[i].cells.length; j++) {
             gameboard2.rows[j].cells[i].addEventListener("click", (cell) => {
-                console.log(j,i);
+                console.log(j, i);
                 if (player2Board[j][i].state == "Ship") //Will be S if its a ship using 1 to test 
                 {
-                    player2Board[j][i].state = "Hit"; 
+                    player2Board[j][i].state = "Hit";
                     gameboard2.rows[j].cells[i].style.backgroundColor = "red"; //This will be else where
                 }
                 else {
@@ -156,51 +155,46 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }
 
-    document.getElementById("start").addEventListener("click", startGame)
-
+    document.getElementById("start").addEventListener("click", startGame);
+    document.getElementById("toggle-color").addEventListener("click", () => {
+        console.log('Toggling Colors');
+        execOnGrid('#game-grid-1', (cell) => { toggleColor(cell, 'blue') });
+        execOnGrid('#game-grid-2', (cell) => { toggleColor(cell, 'purple') });
+    });
+    document.getElementById("game-over").addEventListener("click", () => gameOver("Person"));
 })
 
 //Function display the state 
 //Might messed up the index cause j and i are flipped haha thanks Issac!
-const displayboard = (statebackboard,ID) =>
-{
+const displayboard = (statebackboard, ID) => {
     let gameboard1 = document.querySelector(ID);
 
-    for (let i = 0; i < gameboard1.rows.length; i++) 
-    {
-        for (let j = 0; j < gameboard1.rows[i].cells.length; j++) 
-        {
-            if (statebackboard[j][i].state == "Ship")
-            {
+    for (let i = 0; i < gameboard1.rows.length; i++) {
+        for (let j = 0; j < gameboard1.rows[i].cells.length; j++) {
+            if (statebackboard[j][i].state == "Ship") {
                 gameboard1.rows[j].cells[i].innerHTML = "Ship";
             }
-            if (statebackboard[j][i].state == "Empty")
-            {
+            if (statebackboard[j][i].state == "Empty") {
                 gameboard1.rows[j].cells[i].innerHTML = "~";
             }
-            if (statebackboard[j][i].state == "Miss")
-            {
+            if (statebackboard[j][i].state == "Miss") {
                 gameboard1.rows[j].cells[i].innerHTML = "X";
             }
-            if (statebackboard[j][i].state == "Hit")
-            {
-                gameboard1.rows[j].cells[i].style.backgroundColor = "red"; 
+            if (statebackboard[j][i].state == "Hit") {
+                gameboard1.rows[j].cells[i].style.backgroundColor = "red";
             }
         }
     }
 }
 
-checkBounds = (ship) => {
-    for(let i = 0; i < ship.length; i++)
-    {
-      let x = ship.List[i].coordinate.x;
-      let y = ship.List[i].coordinate.y;
+const checkBounds = (ship) => {
+    for (let i = 0; i < ship.length; i++) {
+        let x = ship.List[i].coordinate.x;
+        let y = ship.List[i].coordinate.y;
 
-      if((x < 0 && x > 8) || (y < 0 && y > 8)) 
-      {
-        return false;
-      }
+        if ((x < 0 && x > 8) || (y < 0 && y > 8)) {
+            return false;
+        }
     }
 
-  }
-  //-------------------------
+}
