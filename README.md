@@ -13,3 +13,6 @@ Configured in app.js and package.json
 - Isaac Kuhlmann
 - Liam Einspahr
 - [Will Thomas](https://github.com/Durbatuluk1701)
+
+# Todo Stuff
+- Reset Game
