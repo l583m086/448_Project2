@@ -3,28 +3,61 @@ import Space from "./space.js"
 console.log("SHIP CLASS IS MERGED");
 //Console output to test if 'ship.js' was correctly implemented into 'index.html'
 
-class Ship { //New class 'Ship' that stores a variable 'length'
+export class ShipContainer {
+  constructor(numShips) {
+    this.numShips = numShips;
+    this.ships = [];
+    this.shipsCount = 0;
+  }
+
+  addShip = (ship) => {
+    this.ships.push(ship);
+    this.shipsCount++;
+  }
+
+  hit = (x, y) => {
+    this.ships.forEach((ship) => {
+      ship.List.forEach((space) => {
+        if (space.coordinate.x === x && space.coordinate.y === y) {
+          space.state = "Hit";
+          ship.setCounter(ship.counter + 1);
+          if (ship.sunk()) {
+            alert("You sunk my ship");
+          }
+          return;
+        }
+      })
+    })
+  }
+
+  allSunk = () => {
+    this.ships.every((ship) => ship.sunk());
+  }
+}
+
+export class Ship { //New class 'Ship' that stores a variable 'length'
   constructor(length, space, dir) { //Ship Object constructor that takes in variable 'length'
     this.length = length; //Given length of a ship object (1, 2, 3 ,4, and 5)
     this.isSunk = false;
     this.dir = dir;
+    this.counter = 0;
     this.space = space;
     this.List = [];
 
     for (let i = 0; i < length; i++) {
-      if (i == 0) {
+      if (i === 0) {
         this.List.push(space);
       }
-      else if (dir == 'u') {
+      else if (dir == 'up') {
         this.List.push(new Space((space.coordinate.x - i), (space.coordinate.y)));
       }
-      else if (dir == 'd') {
+      else if (dir == 'down') {
         this.List.push(new Space((space.coordinate.x + i), (space.coordinate.y)));
       }
-      else if (dir == 'l') {
+      else if (dir == 'left') {
         this.List.push(new Space((space.coordinate.x), (space.coordinate.y - i)));
       }
-      else if (dir == 'r') {
+      else if (dir == 'right') {
         this.List.push(new Space((space.coordinate.x), (space.coordinate.y + i)));
       }
 
