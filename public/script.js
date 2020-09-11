@@ -274,14 +274,13 @@ const displayboard = (statebackboard, ID) => {
                 gameboard1.rows[j].cells[i].innerHTML = "Ship";
             }
             if (statebackboard[j][i].state == "Empty") {
-                gameboard1.rows[j].cells[i].innerHTML = "~";
+                gameboard1.rows[j].cells[i].innerHTML = "<img src='image/Waterforbattleship.jpg'  alt='water'/>";
             }
             if (statebackboard[j][i].state == "Miss") {
-                gameboard1.rows[j].cells[i].innerHTML = "X";
+                gameboard1.rows[j].cells[i].innerHTML = "<img src='image/Miss.jpg'  alt='miss water splash'/>";;
             }
             if (statebackboard[j][i].state == "Hit") {
-                gameboard1.rows[j].cells[i].innerHTML = "O";
-                gameboard1.rows[j].cells[i].style.backgroundColor = "red";
+                gameboard1.rows[j].cells[i].innerHTML = "<img src='image/hit.jpg'  alt='explosion hit'/>";;
             }
         }
     }
