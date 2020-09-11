@@ -15,17 +15,8 @@
     <div id="flexContainer">
         <div id="sideBar">
             <button id="start">Start Game</button>
-            <button onclick="execOnGrid('#game-grid-1', (cell) => {
-                console.log(`Cell ID: ${cell.id}\nCell Value: ${document.querySelector('#' + cell.id).innerHTML}`)
-            })">
-                Trial
-            </button>
-            <button onclick="(() => {
-                console.log('Toggling Colors');
-                execOnGrid('#game-grid-1', (cell) => {toggleColor(cell, 'blue')});
-                execOnGrid('#game-grid-2', (cell) => {toggleColor(cell, 'purple')});
-            })()">Toggle Color</button>
-            <button onclick="gameOver()">Game Over Test</button>
+            <button id="toggle-color">Toggle Color</button>
+            <button id="game-over">Game Over Test</button>
         </div>
         <div id="gameContainer">
             <h2>Player 1</h2>
