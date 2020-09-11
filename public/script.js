@@ -123,7 +123,7 @@ const player1Hit = (x, y) => {
     if (player2Board[y][x].state === "Ship") {
         alert("HIT!!!!!");
         player1OppBoard[y][x].state = "Hit";
-        player1Ships.hit(y, x);
+        player2Ships.hit(y, x);
         displayboard(player1OppBoard, "#game-grid-2");
     } else {
         alert("MISS");
@@ -140,7 +140,7 @@ const player2Hit = (x, y) => {
     if (player1Board[y][x].state === "Ship") {
         alert("HIT!!!!!");
         player2OppBoard[y][x].state = "Hit";
-        player2Ships.hit(y, x);
+        player1Ships.hit(y, x);
         displayboard(player2OppBoard, "#game-grid-1");
     } else {
         alert("MISS");
@@ -151,28 +151,6 @@ const player2Hit = (x, y) => {
         displayboard(player1Board, "#game-grid-1");
         displayboard(player1OppBoard, "#game-grid-2");
     }
-}
-
-
-
-const showPlayerBoard = (board, gridId, opponentBoard, opponentId) => {
-    confirm("Switch Players");
-    displayboard(board, gridId);
-    displayboard(opponentBoard, opponentId);
-}
-
-const selectNumberShips = () => {
-    let promptText = document.querySelector("#player-prompt-text");
-    promptText.hidden = false;
-    promptText.innerHTML = "Enter the Number of Ships (1-5): ";
-    document.querySelector("#player-prompt-submit").addEventListener("click", () => {
-        do {
-            numberOfShips = parseInt(document.querySelector("#player-prompt-value"));
-            if (numberOfShips < 0 || numberOfShips > 5 || isNaN(numberOfShips)) {
-                document.querySelector("#prompt-error").innerHTML = "INVALID INPUT!";
-            }
-        } while (numberOfShips < 0 || numberOfShips > 5 || isNaN(numberOfShips));
-    });
 }
 
 // Starts the game
