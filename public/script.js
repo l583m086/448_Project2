@@ -189,3 +189,18 @@ const displayboard = (statebackboard,ID) =>
         }
     }
 }
+
+checkBounds = (ship) => {
+    for(let i = 0; i < ship.length; i++)
+    {
+      let x = ship.List[i].coordinate.x;
+      let y = ship.List[i].coordinate.y;
+
+      if((x < 0 && x > 8) || (y < 0 && y > 8)) 
+      {
+        return false;
+      }
+    }
+
+  }
+  //-------------------------

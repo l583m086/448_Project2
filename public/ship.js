@@ -1,7 +1,40 @@
+import Space from "./space.js"
+
 console.log("SHIP CLASS IS MERGED");
 //Console output to test if 'ship.js' was correctly implemented into 'index.html'
 
 class Ship { //New class 'Ship' that stores a variable 'length'
+    constructor(length, space, dir) { //Ship Object constructor that takes in variable 'length'
+      this.length = length; //Given length of a ship object (1, 2, 3 ,4, and 5)
+      this.isSunk = false;
+      this.dir = dir;
+      this.space = space;
+      this.List = [];
+
+      for(let i = 0; i < length; i++)
+      {
+        if(i == 0) {
+          this.List.push(space);
+        }
+        else if(dir == 'u')
+        {
+          this.List.push(new Space((space.coordinate.x-i), (space.coordinate.y)));
+        }
+        else if(dir == 'd')
+        {
+          this.List.push(new Space((space.coordinate.x+i), (space.coordinate.y)));
+        }
+        else if(dir == 'l')
+        {
+          this.List.push(new Space((space.coordinate.x), (space.coordinate.y-i)));
+        }
+        else if(dir == 'r')
+        {
+          this.List.push(new Space((space.coordinate.x), (space.coordinate.y+i)));
+        }
+
+      }
+
     constructor(length) { //Ship Object constructor that takes in variable 'length'
       this.length = length; //Given length of a ship object (1, 2, 3 ,4, and 5)
       this.counter = 0; //Counter variable that will be used to keep track of hits on a relative 'Ship' object
@@ -26,7 +59,10 @@ class Ship { //New class 'Ship' that stores a variable 'length'
       else
         return false;
     }
+}
 
+
+/*var p1ShipContainer = new Array();
 
 }
 
@@ -49,7 +85,4 @@ for(let i = 0; i < 5; i++)
   p2ShipContainer[i] = new Ship(i + 1);
   console.log("p2 Ship " + (i+1) + " created");
 }
-
-
-
 
