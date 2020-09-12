@@ -30,6 +30,12 @@ export class ShipContainer {
     this.shipsCount++;
   }
 
+  /*
+  * Method: hit
+  * Pre: Game is running, currentPhase in a 'x-turn' phase
+  * Params: 'x': x-coordinate; 'y': y-coordinate;
+  * Post: Determines whether a ship is hit given the x, y coordinates, sinks given ship if all ship spaces hit
+  */
   hit = (x, y) => {
     this.ships.forEach((ship) => {
       ship.List.forEach((space) => {
@@ -44,19 +50,43 @@ export class ShipContainer {
     })
   }
 
+  /*
+  * Method: sinkShip
+  * Pre: Game is running, currentPhase in a 'x-turn' phase
+  * Params: None
+  * Post: Alert's players to the fact that a ship has been sunk, increments sunk ship counter
+  */
   sinkShip = () => {
     this.sunkShips = this.sunkShips + 1;
     alert("You sunk my ship");
   }
 
+  /*
+  * Method: allSunk
+  * Pre: Game is running
+  * Params: None
+  * Post: Returns true if all ships are sunk, false if not
+  */
   allSunk = () => {
     return this.sunkShips === this.shipsCount;
   }
 }
 
-export class Ship { //New class 'Ship' that stores a variable 'length'
-  constructor(length, space, dir) { //Ship Object constructor that takes in variable 'length'
-    this.length = length; //Given length of a ship object (1, 2, 3 ,4, and 5)
+/*
+* Class: Ship
+* Pre: None
+* Params: None
+* Post: New class 'Ship' that stores a variable 'length'
+*/
+export class Ship {
+  /*
+  * Method: Constructor
+  * Pre: None
+  * Params: 'length': ship length, 'space': Space.js object for coordinates of ship head; 'dir': [up, down, left, right] for ship direction
+  * Post: Creates Ship object, stores Space objects in this.List, Space objects created using 'space' and 'dir' params
+  */
+  constructor(length, space, dir) {
+    this.length = length;
     this.isSunk = false;
     this.counter = 0;
     this.space = space;
@@ -82,15 +112,13 @@ export class Ship { //New class 'Ship' that stores a variable 'length'
     }
   }
 
-  getLength() { //Getter that returns the 'length' of the ship object
-    return this.length;
-  }
-
-  getCounter() {  //Getter that returns the 'counter' variable when called
-    return this.counter;
-  }
-
-  setCounter(x) { //Setter that modifys the 'counter' variabe when called
+  /*
+  * Method: setCounter
+  * Pre: Ship object has been created
+  * Params: 'x': new counter value
+  * Post: Sets value of this.counter to x, modifies this.isSunk if ship is sunk
+  */
+  setCounter(x) {
     this.counter = x;
     if (x === this.length) {
       this.isSunk = true;
