@@ -193,12 +193,17 @@ const checkGameOver = () => {
 const player1Hit = (x, y) => {
     if (player2Board[y][x].state === "Ship") {
         alert("HIT!!!!!");
+        player2Board[y][x].state = "Sunk";
         player1OppBoard[y][x].state = "Hit";
         player2Ships.hit(y, x);
         displayboard(player1OppBoard, "#game-grid-2");
     } else {
-        alert("MISS");
-        player1OppBoard[y][x].state = "Miss";
+        if (player2Board[y][x].state !== "Sunk") {
+            alert("MISS");
+            player1OppBoard[y][x].state = "Miss";
+        } else {
+            alert("Already fired there");
+        }
         currentPhase = "p2-turn";
         displayboard(player1OppBoard, "#game-grid-2");
         alert("Switch Players!");
@@ -210,12 +215,17 @@ const player1Hit = (x, y) => {
 const player2Hit = (x, y) => {
     if (player1Board[y][x].state === "Ship") {
         alert("HIT!!!!!");
+        player1Board[y][x].state = "Sunk";
         player2OppBoard[y][x].state = "Hit";
         player1Ships.hit(y, x);
         displayboard(player2OppBoard, "#game-grid-1");
     } else {
-        alert("MISS");
-        player2OppBoard[y][x].state = "Miss";
+        if (player1Board[y][x].state !== "Sunk") {
+            alert("MISS");
+            player2OppBoard[y][x].state = "Miss";
+        } else {
+            alert("Already fired there");
+        }
         currentPhase = "p1-turn";
         displayboard(player2OppBoard, "#game-grid-1");
         alert("Switch Players!");
@@ -343,16 +353,16 @@ const displayboard = (statebackboard, ID) => {
 
     for (let i = 0; i < gameboard1.rows.length; i++) {
         for (let j = 0; j < gameboard1.rows[i].cells.length; j++) {
-            if (statebackboard[j][i].state == "Ship") {
+            if (statebackboard[j][i].state === "Ship") {
                 gameboard1.rows[j].cells[i].innerHTML = "Ship";
             }
-            if (statebackboard[j][i].state == "Empty") {
+            if (statebackboard[j][i].state === "Empty") {
                 gameboard1.rows[j].cells[i].innerHTML = "<img src='image/Waterforbattleship.jpg'  alt='water'/>";
             }
-            if (statebackboard[j][i].state == "Miss") {
+            if (statebackboard[j][i].state === "Miss") {
                 gameboard1.rows[j].cells[i].innerHTML = "<img src='image/Miss.jpg'  alt='miss water splash'/>";;
             }
-            if (statebackboard[j][i].state == "Hit") {
+            if (statebackboard[j][i].state === "Hit" || statebackboard[j][i].state === "Sunk") {
                 gameboard1.rows[j].cells[i].innerHTML = "<img src='image/hit.jpg'  alt='explosion hit'/>";;
             }
         }

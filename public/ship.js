@@ -1,12 +1,30 @@
 import Space from "./space.js"
 
+/*
+* Class: ShipContainer
+* Pre: None
+* Params: None
+* Post: Creates ShipContainer
+*/
 export class ShipContainer {
+  /*
+  * Class: ShipContainer
+  * Pre: None
+  * Params: None
+  * Post: Creates ShipContainer
+  */
   constructor() {
     this.ships = [];
     this.shipsCount = 0;
     this.sunkShips = 0;
   }
 
+  /*
+  * Method: addShip
+  * Pre: ShipContainer constructed
+  * Params: "ship": Ship to be added
+  * Post: ShipContainer ship list has new ship, counter incremented
+  */
   addShip = (ship) => {
     this.ships.push(ship);
     this.shipsCount++;
