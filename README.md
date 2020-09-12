@@ -4,6 +4,11 @@ Project 1 Repository for EECS 448 - Software Engineering
 # NPM
 Configured in app.js and package.json
 
+Use command "npm install" then "npm start" or "node app.js" to launch the server on port 3000 (localhost:3000)
+- Node must be installed
+
+
+**Dev Team**
 1. Run "npm install" first
 2. Use command "npm start" or "node app.js" to launch the server on port 3000 
 
