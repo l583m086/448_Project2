@@ -54,7 +54,7 @@ const placeShip = (board, x, y, player) => {
         board[x][y].state = "Ship"
         displayboard(board, player === "Player 1" ? "#game-grid-1" : "#game-grid-2");
         board[x][y].state = "Empty"
-        let direction = ""
+        let direction = "";
         let done = false;
         function keyListener(e) {
             if (e.key == "ArrowLeft") {
@@ -114,6 +114,12 @@ const placeShip = (board, x, y, player) => {
             document.addEventListener('keydown', keyListener);
 
             document.addEventListener('keydown', function enterListener(e) {
+                const clickListener = () => {
+                    document.removeEventListener('keydown', enterListener);
+                    document.removeEventListener('keydown', keyListener);
+                }
+
+                document.addEventListener('click', clickListener);
                 let ship = {}
                 if (player === "Player 1") {
                     ship = new Ship(p1Ships + 1, new Space(x, y), direction)
@@ -138,7 +144,8 @@ const placeShip = (board, x, y, player) => {
                             }
                             displayboard(board, player === "Player 1" ? "#game-grid-1" : "#game-grid-2");
                             document.removeEventListener('keydown', keyListener);
-                            document.removeEventListener('keydown', enterListener)
+                            document.removeEventListener('click', clickListener);
+                            document.removeEventListener('keydown', enterListener);
                         }
                         else {
                             alert("Use Arrow Keys to Place")
