@@ -172,11 +172,11 @@ const checkGameOver = () => {
         return;
     }
     if (player1Ships.allSunk()) {
-        gameOver("Player 1");
+        gameOver("Player 2");
         currentPhase = "game-over";
         return true;
     } else if (player2Ships.allSunk()) {
-        gameOver("Player 2");
+        gameOver("Player 1");
         currentPhase = "game-over";
         return true;
     }
