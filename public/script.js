@@ -405,16 +405,21 @@ const displayboard = (statebackboard, ID) => {
     for (let i = 0; i < gameBoard.rows.length; i++) {
         for (let j = 0; j < gameBoard.rows[i].cells.length; j++) {
             if (statebackboard[j][i].state === "Ship") {
-                gameBoard.rows[j].cells[i].innerHTML = "Ship";
+                gameBoard.rows[j].cells[i].innerHTML = "";
+                gameBoard.rows[j].cells[i].style.backgroundColor = "grey";
             }
             if (statebackboard[j][i].state === "Empty") {
                 gameBoard.rows[j].cells[i].innerHTML = "<img src='image/Waterforbattleship.jpg'  alt='water'/>";
+                gameBoard.rows[j].cells[i].style.backgroundColor = "#0066FF";   //same as in index.html
             }
             if (statebackboard[j][i].state === "Miss") {
-                gameBoard.rows[j].cells[i].innerHTML = "<img src='image/Miss.jpg'  alt='miss water splash'/>";;
+                gameBoard.rows[j].cells[i].innerHTML = "";;
+                gameBoard.rows[j].cells[i].style.backgroundColor = "white";
             }
             if (statebackboard[j][i].state === "Hit" || statebackboard[j][i].state === "Sunk") {
-                gameBoard.rows[j].cells[i].innerHTML = "<img src='image/hit.jpg'  alt='explosion hit'/>";;
+                gameBoard.rows[j].cells[i].innerHTML = "<img src='image/hit.jpg'  alt='explosion hit'/>";
+                gameBoard.rows[j].cells[i].style.backgroundColor = "black";
+
             }
         }
     }
