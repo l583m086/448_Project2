@@ -341,7 +341,7 @@ const clearBoard = (boardName) => {
     for (let i = 0; i < gameGrid.rows.length - 1; i++) {
         for (let j = 0; j < gameGrid.rows[i + 1].cells.length - 1; j++) {
             gameGrid.rows[j + 1].cells[i + 1].innerHTML = "";
-            gameGrid.rows[j + 1].cells[i + 1].style = "";
+            gameGrid.rows[j + 1].cells[i + 1].style = "background-color:#0066ff;";
             gameGrid.rows[j + 1].cells[i + 1].onclick = "";
         }
     }
