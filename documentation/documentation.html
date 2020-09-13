@@ -1,12 +1,132 @@
+
 <!DOCTYPE html>
-<html>
+    <head>
+        <title>Documentation</title>
+    </head>
+    <body>
 
-<head>
-    <title>Documentation</title>
-</head>
+        <h2>Method: newBoard</h2>
+        <h3>Pre Conditions: None</h3>
+        <h3>Params: None</h3>
+        <h3>Post Conditions: new stateboard/backboard is generated </h3>
 
-<body>
-    <h1>Battleship Documentation</h1>
+        <h2>Method: findSpace</h2>
+        <h3>Pre Conditions: Stateboard exists</h3>
+        <h3>Params: 'x': x</h3>
+        <h3>Post Conditions: Returns the space on the stateboard with corresponding x, y coordinates</h3>
+
+        <h2>Method: placeShip</h2>
+        <h3>Pre Conditions: Stateboard exists, game has started, currentPhase is in one of the </h3>
+        <h3>Params: 'board': the stateboard being modified; 'x': x</h3>
+        <h3>Post Conditions: A new ship has been placed on the given board, player ship count increments, add ship to ship container, new board displayed</h3>
+
+        <h2>Method: checkGameOver</h2>
+        <h3>Pre Conditions: Game is running</h3>
+        <h3>Params: None</h3>
+        <h3>Post Conditions: Game will end if all ships given are in a state of being sunken, changes phase to game</h3>
+
+        <h2>Method: player1Hit</h2>
+        <h3>Pre Conditions: Game is running, currentPhase in 'p1</h3>
+        <h3>Params: 'x': x</h3>
+        <h3>Post Conditions: Player either hits or misses, new board state is displayed, changes phase on miss</h3>
+
+        <h2>Method: player2Hit</h2>
+        <h3>Pre Conditions: Game is running, currentPhase in 'p2</h3>
+        <h3>Params: 'x': x</h3>
+        <h3>Post Conditions: Player either hits or misses, new board state is displayed, changes phase on miss</h3>
+
+        <h2>Method: startgame</h2>
+        <h3>Pre Conditions: None </h3>
+        <h3>Params: None</h3>
+        <h3>Post Conditions: Starts game if not started, changes phase to ship placement, displays board, resets game if game</h3>
+
+        <h2>Method: gameOver</h2>
+        <h3>Pre Conditions: None</h3>
+        <h3>Params: winnerName: </h3>
+        <h3>Post Conditions: Game is reset and winner is announced</h3>
+
+        <h2>Method: clearBoard</h2>
+        <h3>Pre Conditions: None</h3>
+        <h3>Params: boardName: </h3>
+        <h3>Post Conditions: The game board cell values, styles, and onclicks are removed</h3>
+
+        <h2>Method: displayBoard</h2>
+        <h3>Pre Conditions: Game is running</h3>
+        <h3>Params: 'statebackboard': stateboard for a player, 'ID': CSS ID tag for Table</h3>
+        <h3>Post Conditions: Maps stateboard state to the table given by the ID param</h3>
+
+        <h2>Method: checkBounds</h2>
+        <h3>Pre Conditions: Game is running, currentPhase in 'x</h3>
+        <h3>Params: 'ship': ship.js object; 'board': stateboard</h3>
+        <h3>Post Conditions: Verifies that a ship object does not violate any placement rules for a given board param</h3>
+
+        <h2>Method: ShipContainer</h2>
+        <h3>Pre Conditions: None</h3>
+        <h3>Params: None</h3>
+        <h3>Post Conditions: Creates ShipContainer</h3>
+
+        <h2>Method: ShipContainer</h2>
+        <h3>Pre Conditions: None</h3>
+        <h3>Params: None</h3>
+        <h3>Post Conditions: Creates ShipContainer</h3>
+
+        <h2>Method: addShip</h2>
+        <h3>Pre Conditions: ShipContainer constructed</h3>
+        <h3>Params: 'ship': Ship to be added</h3>
+        <h3>Post Conditions: ShipContainer ship list has new ship, counter incremented</h3>
+
+        <h2>Method: hit</h2>
+        <h3>Pre Conditions: Game is running, currentPhase in a 'x</h3>
+        <h3>Params: 'x': x</h3>
+        <h3>Post Conditions: Determines whether a ship is hit given the x, y coordinates, sinks given ship if all ship spaces hit</h3>
+
+        <h2>Method: sinkShip</h2>
+        <h3>Pre Conditions: Game is running, currentPhase in a 'x</h3>
+        <h3>Params: None</h3>
+        <h3>Post Conditions: Alert's players to the fact that a ship has been sunk, increments sunk ship counter</h3>
+
+        <h2>Method: allSunk</h2>
+        <h3>Pre Conditions: Game is running</h3>
+        <h3>Params: None</h3>
+        <h3>Post Conditions: Returns true if all ships are sunk, false if not</h3>
+
+        <h2>Method: Ship</h2>
+        <h3>Pre Conditions: None</h3>
+        <h3>Params: None</h3>
+        <h3>Post Conditions: New class 'Ship' that stores a variable 'length'</h3>
+
+        <h2>Method: Constructor</h2>
+        <h3>Pre Conditions: None</h3>
+        <h3>Params: 'length': ship length, 'space': Space.js object for coordinates of ship head; 'dir': </h3>
+        <h3>Post Conditions: Creates Ship object, stores Space objects in this.List, Space objects created using 'space' and 'dir' params</h3>
+
+        <h2>Method: setCounter</h2>
+        <h3>Pre Conditions: Ship object has been created</h3>
+        <h3>Params: 'x': new counter value</h3>
+        <h3>Post Conditions: Sets value of this.counter to x, modifies this.isSunk if ship is sunk</h3>
+
+        <h2>Method: Space</h2>
+        <h3>Pre Conditions: None</h3>
+        <h3>Params: View Constructor</h3>
+        <h3>Post Conditions: new Space object returned</h3>
+
+        <h2>Method: Space</h2>
+        <h3>Pre Conditions: None</h3>
+        <h3>Params: 'x': x</h3>
+        <h3>Post Conditions: New Space object returned, default m_state set to empty</h3>
+
+        <h2>Method: coordinate</h2>
+        <h3>Pre Conditions: Space exists, called with .coordinate</h3>
+        <h3>Params: None</h3>
+        <h3>Post Conditions: Getter for the values of the x and y coordinates on this Space object. Returned as </h3>
+
+        <h2>Method: state</h2>
+        <h3>Pre Conditions: Space exists, called with .state</h3>
+        <h3>Params: None</h3>
+        <h3>Post Conditions: Getter for the values of the m_state of this Space object</h3>
+
+        <h2>Method: state</h2>
+        <h3>Pre Conditions: Space exists, called with .state </h3>
+        <h3>Params: None</h3>
+        <h3>Post Conditions: Setter for the values of the m_state. Modifies state based upon possible state values;</h3>
 </body>
-
-</html>

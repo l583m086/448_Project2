@@ -22,7 +22,7 @@ export class ShipContainer {
   /*
   * Method: addShip
   * Pre: ShipContainer constructed
-  * Params: "ship": Ship to be added
+  * Params: 'ship': Ship to be added
   * Post: ShipContainer ship list has new ship, counter incremented
   */
   addShip = (ship) => {

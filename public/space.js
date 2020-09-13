@@ -10,6 +10,7 @@ const states = {
 /*
 * Class: Space
 * Pre: None
+* Params: View Constructor
 * Post: new Space object returned
 */
 export default class Space {
