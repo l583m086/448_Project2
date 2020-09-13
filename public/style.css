@@ -36,14 +36,14 @@
     width: 450px;
     border: 2px solid black;
     margin: auto;
+    table-layout: fixed;
 }
 
 .game-grid td {
     border: 0px solid black;
-    width: 50px;
-    height: 50px;
+    width: 50px !important;
+    height: 50px !important;
     text-align: center;
     background-color: #71bae7;
     color: black;
 }
-

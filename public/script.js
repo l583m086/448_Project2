@@ -338,11 +338,11 @@ const gameOver = (winnerName) => {
 */
 const clearBoard = (boardName) => {
     let gameGrid = document.querySelector(boardName);
-    for (let row of gameGrid.children[0].children) {
-        for (let cell of row.children) {
-            cell.innerHTML = "";
-            cell.style = "";
-            cell.onclick = "";
+    for (let i = 0; i < gameGrid.rows.length - 1; i++) {
+        for (let j = 0; j < gameGrid.rows[i + 1].cells.length - 1; j++) {
+            gameGrid.rows[j + 1].cells[i + 1].innerHTML = "";
+            gameGrid.rows[j + 1].cells[i + 1].style = "";
+            gameGrid.rows[j + 1].cells[i + 1].onclick = "";
         }
     }
 }
@@ -350,9 +350,9 @@ const clearBoard = (boardName) => {
 // Adds HTML Table event listeners for handling battleship click events
 document.addEventListener("DOMContentLoaded", function () {
     let gameboard1 = document.getElementById("game-grid-1");
-    for (let i = 0; i < gameboard1.rows.length; i++) {
-        for (let j = 0; j < gameboard1.rows[i].cells.length; j++) {
-            gameboard1.rows[j].cells[i].addEventListener("click", () => {
+    for (let i = 0; i < gameboard1.rows.length - 1; i++) {
+        for (let j = 0; j < gameboard1.rows[i + 1].cells.length - 1; j++) {
+            gameboard1.rows[j + 1].cells[i + 1].addEventListener("click", () => {
                 if (currentPhase === "p1-ship") {
                     placeShip(player1Board, j, i, "Player 1");
                 } else if (currentPhase === "p1-turn") {
@@ -370,9 +370,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     let gameboard2 = document.getElementById("game-grid-2");
-    for (let i = 0; i < gameboard2.rows.length; i++) {
-        for (let j = 0; j < gameboard2.rows[i].cells.length; j++) {
-            gameboard2.rows[j].cells[i].addEventListener("click", (cell) => {
+    for (let i = 0; i < gameboard2.rows.length - 1; i++) {
+        for (let j = 0; j < gameboard2.rows[i + 1].cells.length - 1; j++) {
+            gameboard2.rows[j + 1].cells[i + 1].addEventListener("click", (cell) => {
                 if (currentPhase === "p2-ship") {
                     placeShip(player2Board, j, i, "Player 2");
                 } else if (currentPhase === "p2-turn") {
@@ -402,24 +402,23 @@ document.addEventListener("DOMContentLoaded", function () {
 const displayboard = (statebackboard, ID) => {
     let gameBoard = document.querySelector(ID);
 
-    for (let i = 0; i < gameBoard.rows.length; i++) {
-        for (let j = 0; j < gameBoard.rows[i].cells.length; j++) {
+    for (let i = 0; i < gameBoard.rows.length - 1; i++) {
+        for (let j = 0; j < gameBoard.rows[i + 1].cells.length - 1; j++) {
             if (statebackboard[j][i].state === "Ship") {
-                gameBoard.rows[j].cells[i].innerHTML = "";
-                gameBoard.rows[j].cells[i].style.backgroundColor = "grey";
+                gameBoard.rows[j + 1].cells[i + 1].innerHTML = "";
+                gameBoard.rows[j + 1].cells[i + 1].style.backgroundColor = "grey";
             }
             if (statebackboard[j][i].state === "Empty") {
-                gameBoard.rows[j].cells[i].innerHTML = "<img src='image/Waterforbattleship.jpg'  alt='water'/>";
-                gameBoard.rows[j].cells[i].style.backgroundColor = "#0066FF";   //same as in index.html
+                gameBoard.rows[j + 1].cells[i + 1].innerHTML = "<img src='image/Waterforbattleship.jpg'  alt='water'/>";
+                gameBoard.rows[j + 1].cells[i + 1].style.backgroundColor = "#0066FF";   //same as in index.html
             }
             if (statebackboard[j][i].state === "Miss") {
-                gameBoard.rows[j].cells[i].innerHTML = "";;
-                gameBoard.rows[j].cells[i].style.backgroundColor = "white";
+                gameBoard.rows[j + 1].cells[i + 1].innerHTML = "";;
+                gameBoard.rows[j + 1].cells[i + 1].style.backgroundColor = "white";
             }
             if (statebackboard[j][i].state === "Hit" || statebackboard[j][i].state === "Sunk") {
-                gameBoard.rows[j].cells[i].innerHTML = "<img src='image/hit.jpg'  alt='explosion hit'/>";
-                gameBoard.rows[j].cells[i].style.backgroundColor = "black";
-
+                gameBoard.rows[j + 1].cells[i + 1].innerHTML = "<img src='image/hit.jpg'  alt='explosion hit'/>";
+                gameBoard.rows[j + 1].cells[i + 1].style.backgroundColor = "black";
             }
         }
     }
