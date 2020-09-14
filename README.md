@@ -18,6 +18,3 @@ Use command "npm install" then "npm start" or "node app.js" to launch the server
 - Isaac Kuhlmann
 - Liam Einspahr
 - [Will Thomas](https://github.com/Durbatuluk1701)
-
-# Todo Stuff
-- Reset Game
