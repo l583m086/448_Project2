@@ -70,7 +70,22 @@ const placeShip = (board, x, y, player) => {
         board[x][y].state = "Empty"
         let direction = "";
         let done = false;
+
+        /*
+        * Method: keyListener
+        * Pre: A player has clicked a space on the board to place a ship
+        * Params: the event of a key being pressed (happens automatically)
+        * Post: sets a temporary direction corresponding to the direction of the arrow key pressed
+        * Post: Also, creates a "temp" ship and displays it on the board
+        * Post: The "temp" ship can be placed by calling the "enterListener" function, which is called by pressing enter with these same conditions
+        */
         function keyListener(e) {
+            const clickListener = () => {
+                document.removeEventListener('keydown', enterListener);
+                document.removeEventListener('keydown', keyListener);
+            }
+
+            document.addEventListener('click', clickListener); 
             if (e.key == "ArrowLeft") {
                 direction = "left"
             }
@@ -127,82 +142,103 @@ const placeShip = (board, x, y, player) => {
                 }
             }
         }
-        if (!done && ((p1Ships === numberOfShips && p2Ships != numberOfShips && player === "Player 2") || (p1Ships != numberOfShips))) {
-            document.addEventListener('keydown', keyListener);
 
-            document.addEventListener('keydown', function enterListener(e) {
-                const clickListener = () => {
-                    document.removeEventListener('keydown', enterListener);
-                    document.removeEventListener('keydown', keyListener);
-                }
+        /*
+        * Method: enterListener
+        * Pre: a player has clicked a space on the board to place a ships AND a direction has been set by "keyListener"
+        * Params: the event of a key being pressed (method checks if key was the enter key)
+        * Post: a real ship is placed where the "temp" ship made by "keyListener" was
+        * Post: adds a ship to the relevant ship container and increments the numberOfShips
+        */
+        function enterListener(e) {
+            const clickListener = () => {
+                document.removeEventListener('keydown', enterListener);
+                document.removeEventListener('keydown', keyListener);
+            }
 
-                document.addEventListener('click', clickListener);
+            document.addEventListener('click', clickListener);
+            let ship = {}
+            if (player === "Player 1") {
+                ship = new Ship(p1Ships + 1, new Space(x, y), direction)
+            } else {
+                ship = new Ship(p2Ships + 1, new Space(x, y), direction)
+            }
+            if (e.key == "Enter") {
                 let ship = {}
-                if (player === "Player 1") {
-                    ship = new Ship(p1Ships + 1, new Space(x, y), direction)
-                } else {
-                    ship = new Ship(p2Ships + 1, new Space(x, y), direction)
-                }
-                if (e.key == "Enter") {
-                    let ship = {}
-                    if (direction != "") {
-                        if (player === "Player 1") {
-                            ship = new Ship(p1Ships + 1, new Space(x, y), direction)
-                        } else {
-                            ship = new Ship(p2Ships + 1, new Space(x, y), direction)
-                        }
-                        if (checkBounds(ship, board)) {
-                            if (direction === "up" || direction === "down" || direction === "right" || direction === "left") {
-                                console.log(direction)
-                                if (player === "Player 1") {
-                                    player1Ships.addShip(new Ship(p1Ships + 1, new Space(x, y), direction));
-                                    p1Ships++;
-                                } else {
-                                    player2Ships.addShip(new Ship(p2Ships + 1, new Space(x, y), direction));
-                                    p2Ships++;
-                                }
-                                for (let ship of (player === "Player 1" ? player1Ships.ships : player2Ships.ships)) {
-                                    for (let space of ship.List) {
-                                        findSpace(space.coordinate.x, space.coordinate.y, board).state = "Ship"
-                                    }
-                                }
-                                displayboard(board, player === "Player 1" ? "#game-grid-1" : "#game-grid-2");
-                                document.removeEventListener('keydown', keyListener);
-                                document.removeEventListener('keydown', enterListener)
-                                if (!((player === "Player 1" ? p1Ships : p2Ships) == numberOfShips)) {
-                                    alert("Place Ship #" + ((player === "Player 1" ? p1Ships : p2Ships) + 1))
-                                }
-                                if (currentPhase === "p1-ship" && p1Ships === numberOfShips) {
-                                    alert("Player 1 Ship Phase Complete");
-                                    displayboard(player2OppBoard, "#game-grid-1");
-                                    displayboard(player2Board, "#game-grid-2");
-                                    confirm("Switch Players!");
-                                    alert("Player 2, Place Ship #1")
-                                    currentPhase = "p2-ship";
-                                }
-                                else if (currentPhase === "p2-ship" && p2Ships === numberOfShips) {
-                                    alert("Player 2 Ship Phase Complete");
-                                    displayboard(player1OppBoard, "#game-grid-2");
-                                    displayboard(player1Board, "#game-grid-1");
-                                    confirm("Switch Players!");
-                                    currentPhase = "p1-turn";
+                if (direction != "") {
+                    if (player === "Player 1") {
+                        ship = new Ship(p1Ships + 1, new Space(x, y), direction)
+                    } else {
+                        ship = new Ship(p2Ships + 1, new Space(x, y), direction)
+                    }
+                    if (checkBounds(ship, board)) {
+                        if (direction === "up" || direction === "down" || direction === "right" || direction === "left") {
+                            console.log(direction)
+                            if (player === "Player 1") {
+                                player1Ships.addShip(new Ship(p1Ships + 1, new Space(x, y), direction));
+                                p1Ships++;
+                            } else {
+                                player2Ships.addShip(new Ship(p2Ships + 1, new Space(x, y), direction));
+                                p2Ships++;
+                            }
+                            for (let ship of (player === "Player 1" ? player1Ships.ships : player2Ships.ships)) {
+                                for (let space of ship.List) {
+                                    findSpace(space.coordinate.x, space.coordinate.y, board).state = "Ship"
                                 }
                             }
-
-                        } else {
-                            alert("Invalid Ship, Try again")
                             displayboard(board, player === "Player 1" ? "#game-grid-1" : "#game-grid-2");
                             document.removeEventListener('keydown', keyListener);
-                            document.removeEventListener('click', clickListener);
-                            document.removeEventListener('keydown', enterListener);
+                            document.removeEventListener('keydown', enterListener)
+                            if (!((player === "Player 1" ? p1Ships : p2Ships) == numberOfShips)) {
+                                alert("Place Ship #" + ((player === "Player 1" ? p1Ships : p2Ships) + 1))
+                            }
+                            if (currentPhase === "p1-ship" && p1Ships === numberOfShips) {
+                                alert("Player 1 Ship Phase Complete");
+                                displayboard(player2OppBoard, "#game-grid-1");
+                                displayboard(player2Board, "#game-grid-2");
+                                confirm("Switch Players!");
+                                alert("Player 2, Place Ship #1")
+                                currentPhase = "p2-ship";
+                            }
+                            else if (currentPhase === "p2-ship" && p2Ships === numberOfShips) {
+                                alert("Player 2 Ship Phase Complete");
+                                displayboard(player1OppBoard, "#game-grid-2");
+                                displayboard(player1Board, "#game-grid-1");
+                                confirm("Switch Players!");
+                                currentPhase = "p1-turn";
+                            }
                         }
-                    }
-                    else {
-                        alert("Use Arrow Keys to Place")
+
+                    } else {
+                        alert("Invalid Ship, Try again")
+                        displayboard(board, player === "Player 1" ? "#game-grid-1" : "#game-grid-2");
+                        document.removeEventListener('keydown', keyListener);
+                        document.removeEventListener('click', clickListener);
+                        document.removeEventListener('keydown', enterListener);
                     }
                 }
+                else {
+                    alert("Use Arrow Keys to Place")
+                }
+            }
 
-            })
+        }
+
+
+        if (!done && ((p1Ships === numberOfShips && p2Ships != numberOfShips && player === "Player 2") || (p1Ships != numberOfShips))) {
+            document.addEventListener('keydown', keyListener);
+            document.addEventListener('keydown', enterListener);
+            let clickCount = 0;
+            const clickListener = () => {
+                if(clickCount == 1){
+                    document.removeEventListener('keydown', enterListener);
+                    document.removeEventListener('keydown', keyListener);
+                    document.removeEventListener('click', clickListener);
+                }
+                clickCount++
+            }
+
+            document.addEventListener('click', clickListener);
         }
     }
 }
