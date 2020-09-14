@@ -56,7 +56,7 @@ const findSpace = (x, y, board) => {
 
 /*
 * Method: placeShip
-* Pre: Stateboard exists, game has started, currentPhase is in one of the "X-ship" phases
+* Pre: Stateboard exists, game has started, currentPhase is in one of the 'X-ship' phases
 * Params: 'board': the stateboard being modified; 'x': x-coordinate; 'y': y-coordinate; 'player': name of the player
 * Post: A new ship has been placed on the given board, player ship count increments, add ship to ship container, new board displayed
 */
@@ -75,9 +75,7 @@ const placeShip = (board, x, y, player) => {
         * Method: keyListener
         * Pre: A player has clicked a space on the board to place a ship
         * Params: the event of a key being pressed (happens automatically)
-        * Post: sets a temporary direction corresponding to the direction of the arrow key pressed
-        * Post: Also, creates a "temp" ship and displays it on the board
-        * Post: The "temp" ship can be placed by calling the "enterListener" function, which is called by pressing enter with these same conditions
+        * Post: sets a temporary direction corresponding to the direction of the arrow key pressed; Also, creates a 'temp' ship and displays it on the board; The 'temp' ship can be placed by calling the 'enterListener' function, which is called by pressing enter with these same conditions
         */
         function keyListener(e) {
             const clickListener = () => {
@@ -85,7 +83,7 @@ const placeShip = (board, x, y, player) => {
                 document.removeEventListener('keydown', keyListener);
             }
 
-            document.addEventListener('click', clickListener); 
+            document.addEventListener('click', clickListener);
             if (e.key == "ArrowLeft") {
                 direction = "left"
             }
@@ -145,10 +143,9 @@ const placeShip = (board, x, y, player) => {
 
         /*
         * Method: enterListener
-        * Pre: a player has clicked a space on the board to place a ships AND a direction has been set by "keyListener"
+        * Pre: a player has clicked a space on the board to place a ships AND a direction has been set by 'keyListener'
         * Params: the event of a key being pressed (method checks if key was the enter key)
-        * Post: a real ship is placed where the "temp" ship made by "keyListener" was
-        * Post: adds a ship to the relevant ship container and increments the numberOfShips
+        * Post: a real ship is placed where the 'temp' ship made by 'keyListener' was; adds a ship to the relevant ship container and increments the numberOfShips
         */
         function enterListener(e) {
             const clickListener = () => {
@@ -230,7 +227,7 @@ const placeShip = (board, x, y, player) => {
             document.addEventListener('keydown', enterListener);
             let clickCount = 0;
             const clickListener = () => {
-                if(clickCount == 1){
+                if (clickCount == 1) {
                     document.removeEventListener('keydown', enterListener);
                     document.removeEventListener('keydown', keyListener);
                     document.removeEventListener('click', clickListener);
@@ -355,7 +352,7 @@ const startGame = () => {
 /*
 * Method: gameOver
 * Pre: None
-* Params: winnerName: "The winners board"
+* Params: winnerName: 'The winners board'
 * Post: Game is reset and winner is announced
 */
 const gameOver = (winnerName) => {
@@ -369,7 +366,7 @@ const gameOver = (winnerName) => {
 /*
 * Method: clearBoard
 * Pre: None
-* Params: boardName: "Name of the board being cleared"
+* Params: boardName: 'Name of the board being cleared'
 * Post: The game board cell values, styles, and onclicks are removed
 */
 const clearBoard = (boardName) => {

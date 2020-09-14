@@ -16,9 +16,19 @@
         <h3>Post Conditions: Returns the space on the stateboard with corresponding x, y coordinates</h3>
 
         <h2>Method: placeShip</h2>
-        <h3>Pre Conditions: Stateboard exists, game has started, currentPhase is in one of the </h3>
+        <h3>Pre Conditions: Stateboard exists, game has started, currentPhase is in one of the 'X</h3>
         <h3>Params: 'board': the stateboard being modified; 'x': x</h3>
         <h3>Post Conditions: A new ship has been placed on the given board, player ship count increments, add ship to ship container, new board displayed</h3>
+
+        <h2>Method: keyListener</h2>
+        <h3>Pre Conditions: A player has clicked a space on the board to place a ship</h3>
+        <h3>Params: the event of a key being pressed </h3>
+        <h3>Post Conditions: sets a temporary direction corresponding to the direction of the arrow key pressed; Also, creates a 'temp' ship and displays it on the board; The 'temp' ship can be placed by calling the 'enterListener' function, which is called by pressing enter with these same conditions</h3>
+
+        <h2>Method: enterListener</h2>
+        <h3>Pre Conditions: a player has clicked a space on the board to place a ships AND a direction has been set by 'keyListener'</h3>
+        <h3>Params: the event of a key being pressed </h3>
+        <h3>Post Conditions: a real ship is placed where the 'temp' ship made by 'keyListener' was; adds a ship to the relevant ship container and increments the numberOfShips</h3>
 
         <h2>Method: checkGameOver</h2>
         <h3>Pre Conditions: Game is running</h3>
@@ -42,12 +52,12 @@
 
         <h2>Method: gameOver</h2>
         <h3>Pre Conditions: None</h3>
-        <h3>Params: winnerName: </h3>
+        <h3>Params: winnerName: 'The winners board'</h3>
         <h3>Post Conditions: Game is reset and winner is announced</h3>
 
         <h2>Method: clearBoard</h2>
         <h3>Pre Conditions: None</h3>
-        <h3>Params: boardName: </h3>
+        <h3>Params: boardName: 'Name of the board being cleared'</h3>
         <h3>Post Conditions: The game board cell values, styles, and onclicks are removed</h3>
 
         <h2>Method: displayBoard</h2>
