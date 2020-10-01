@@ -9,12 +9,24 @@ let player2Board;
 let player1OppBoard;
 let player2OppBoard;
 
+let playerShips;
+let computerShips;
+let playerBoard;
+let computerBoard;
+let playerOppBoard;
+let computerOppBoard;
+
 let numberOfShips = 0;
 
 let currentPhase = "starting"; // starting, p1-ship, p1-turn, p2-ship, p2-turn, game-over
-
+let mode = "";
+let level = "";
 let p1Ships = 0;
 let p2Ships = 0;
+
+const singlePlayerMode = document.querySelector('#singleplayerMode')
+const multiPlayerMode = document.querySelector('#multiplayerMode')
+const startGameButton = document.querySelector('#start')
 // End Global variables
 
 /*
@@ -23,6 +35,42 @@ let p2Ships = 0;
 * Params: None
 * Post: new stateboard/backboard is generated (9x9 board)
 */
+
+singlePlayerMode.addEventListener("click", startSinglePlayerMode)
+multiPlayerMode.addEventListener("click", startMultiPlayerMode)
+
+function startSinglePlayerMode(){
+    mode = "singlePlayer"
+    console.log(mode);
+    document.getElementById('level').style.display = 'block'
+    document.querySelector('#easy').addEventListener("click", startEasyMode)
+    document.querySelector('#medium').addEventListener("click", startMediumMode)
+    document.querySelector('#hard').addEventListener("click", startHardMode)
+    document.querySelector('#player1Id').innerText = "Player"
+    document.querySelector('#player2Id').innerText = "Computer"
+}
+
+function startEasyMode(){
+    console.log("Easy Mode")
+    startGameButton.addEventListener("click", startSinglePlayerGame)
+}
+
+function startMediumMode(){
+    console.log("Medium Mode")
+    startGameButton.addEventListener("click", startSinglePlayerGame)
+}
+
+function startHardMode(){
+    console.log("Hard Mode")
+    startGameButton.addEventListener("click", startSinglePlayerGame)
+}
+function startMultiPlayerMode(){
+    mode = "multiplayer"
+    document.getElementById('level').style.display = 'none'
+    document.querySelector('#player1Id').innerText = "Player1"
+    document.querySelector('#player2Id').innerText = "Player2"
+    startGameButton.addEventListener("click", startMultiplayerGame);
+}
 const newBoard = () => {
     // Coordinate not exactly what you think it is. 
     // To go South of board from top right you need to do +x and to go north -x and same for y +y to go right and -y to go left. 
@@ -240,6 +288,72 @@ const placeShip = (board, x, y, player) => {
     }
 }
 
+function autoGenerateShip(board, numberOfShips){
+    let directions = ['up', 'down', 'left', 'right']
+    let maxBound = 8
+    let minBound = 0
+    let randomXStart = 0
+    let randomYStart = 0
+    let shipLength = 0
+    let randomDirection = 0
+    let valid = false
+
+    for(let i = 0; i < numberOfShips; i++){
+        valid = false
+        // Check if start place is not taken
+        
+        // Check if the ship is valid
+        do{
+            do{
+                randomXStart = Math.floor(Math.random()*(maxBound - minBound) + minBound)
+                randomYStart =  Math.floor(Math.random()*(maxBound - minBound) + minBound)
+            }while(board[randomXStart][randomYStart].state === "Ship")
+
+            shipLength = i + 1
+            randomDirection = Math.floor(Math.random()*directions.length)
+            let ship = new Ship(shipLength, new Space(randomXStart, randomXStart), directions[randomDirection])
+
+            if(checkBounds(ship, board)){
+                // If the ship is valid, add it to the ship cotainer
+                valid = true
+                computerShips.addShip(ship)
+                for (let ship of computerShips.ships) {
+                    for (let space of ship.List) {
+                        findSpace(space.coordinate.x, space.coordinate.y, board).state = "Ship"
+                    }
+                }
+            }
+        }while(!valid)
+    }
+    // displayboard(board, "#game-grid-2")
+}
+
+/*
+* Method: checkBounds
+* Pre: Game is running, currentPhase in 'x-ship' phases
+* Params: 'ship': ship.js object; 'board': stateboard
+* Post: Verifies that a ship object does not violate any placement rules for a given board param
+*/
+const checkBounds = (ship, board) => {
+    for (let i = 0; i < ship.length; i++) {
+        if (ship == null || ship == {}) {
+            return false
+        }
+        let x = ship.List[i].coordinate.x;
+        let y = ship.List[i].coordinate.y;
+
+        if ((x < 0 || x > 8) || (y < 0 || y > 8)) {
+            return false;
+        }
+        else {
+            if (findSpace(x, y, board).state == 'Ship') {
+                return false
+            }
+        }
+    }
+    return true
+}
+
 /*
 * Method: checkGameOver
 * Pre: Game is running
@@ -318,13 +432,36 @@ const player2Hit = (x, y) => {
     }
 }
 
+const startSinglePlayerGame = () => {
+    if(currentPhase === "starting"){
+        playerShips = new ShipContainer();
+        computerShips = new ShipContainer();
+        playerBoard = newBoard()
+        computerBoard = newBoard()
+        playerOppBoard = newBoard()
+        computerOppBoard = newBoard()
+        console.log(currentPhase)
+        displayboard(playerBoard, "#game-grid-1");
+        displayboard(computerBoard, "#game-grid-2");
+        do {
+            numberOfShips = parseInt(prompt("Enter number of ships (1-5): "));
+            if (numberOfShips < 0 || numberOfShips > 5 || isNaN(numberOfShips)) {
+                alert("Invalid Input");
+            }
+        } while (numberOfShips < 0 || numberOfShips > 5 || isNaN(numberOfShips));
+        autoGenerateShip(computerBoard, numberOfShips)
+        displayboard(computerBoard, "#game-grid-2");
+        currentPhase = "p1-ship"
+    }
+}
+
 /*
-* Method: startgame
+* Method: startMultiplayerGame
 * Pre: None 
 * Params: None
 * Post: Starts game if not started, changes phase to ship placement, displays board, resets game if game-over phase
 */
-const startGame = () => {
+const startMultiplayerGame = () => {
     if (currentPhase === "starting") {
         player1Ships = new ShipContainer();
         player2Ships = new ShipContainer();
@@ -382,48 +519,70 @@ const clearBoard = (boardName) => {
 
 // Adds HTML Table event listeners for handling battleship click events
 document.addEventListener("DOMContentLoaded", function () {
-    let gameboard1 = document.getElementById("game-grid-1");
-    for (let i = 0; i < gameboard1.rows.length - 1; i++) {
-        for (let j = 0; j < gameboard1.rows[i + 1].cells.length - 1; j++) {
-            gameboard1.rows[j + 1].cells[i + 1].addEventListener("click", () => {
-                if (currentPhase === "p1-ship") {
-                    placeShip(player1Board, j, i, "Player 1");
-                } else if (currentPhase === "p1-turn") {
-                    // do nothing if they click there own board during there turn
-                } else if (currentPhase === "p2-ship") {
-                    // do nothing if enemy clicks p1 board during ship
-                } else if (currentPhase === "p2-turn") {
-                    player2Hit(i, j);
-                } else if (currentPhase === "game-over") {
-                    alert("Game Over, Reset Game");
+    if(mode === "multiplayer"){
+            let gameboard1 = document.getElementById("game-grid-1");
+            for (let i = 0; i < gameboard1.rows.length - 1; i++) {
+                for (let j = 0; j < gameboard1.rows[i + 1].cells.length - 1; j++) {
+                    gameboard1.rows[j + 1].cells[i + 1].addEventListener("click", () => {
+                        if (currentPhase === "p1-ship") {
+                            placeShip(player1Board, j, i, "Player 1");
+                        } else if (currentPhase === "p1-turn") {
+                            // do nothing if they click there own board during there turn
+                        } else if (currentPhase === "p2-ship") {
+                            // do nothing if enemy clicks p1 board during ship
+                        } else if (currentPhase === "p2-turn") {
+                            player2Hit(i, j);
+                        } else if (currentPhase === "game-over") {
+                            alert("Game Over, Reset Game");
+                        }
+                        checkGameOver();
+                    });
                 }
-                checkGameOver();
-            });
-        }
-    }
+            }
 
-    let gameboard2 = document.getElementById("game-grid-2");
-    for (let i = 0; i < gameboard2.rows.length - 1; i++) {
-        for (let j = 0; j < gameboard2.rows[i + 1].cells.length - 1; j++) {
-            gameboard2.rows[j + 1].cells[i + 1].addEventListener("click", (cell) => {
-                if (currentPhase === "p2-ship") {
-                    placeShip(player2Board, j, i, "Player 2");
-                } else if (currentPhase === "p2-turn") {
-                    // do nothing if they click there own board during there turn
-                } else if (currentPhase === "p1-ship") {
-                    // do nothing if enemy clicks p1 board during ship
-                } else if (currentPhase === "p1-turn") {
-                    player1Hit(i, j);
-                } else if (currentPhase === "game-over") {
-                    alert("Game Over, Reset Game");
+            let gameboard2 = document.getElementById("game-grid-2");
+            for (let i = 0; i < gameboard2.rows.length - 1; i++) {
+                for (let j = 0; j < gameboard2.rows[i + 1].cells.length - 1; j++) {
+                    gameboard2.rows[j + 1].cells[i + 1].addEventListener("click", (cell) => {
+                        if (currentPhase === "p2-ship") {
+                            placeShip(player2Board, j, i, "Player 2");
+                        } else if (currentPhase === "p2-turn") {
+                            // do nothing if they click there own board during there turn
+                        } else if (currentPhase === "p1-ship") {
+                            // do nothing if enemy clicks p1 board during ship
+                        } else if (currentPhase === "p1-turn") {
+                            player1Hit(i, j);
+                        } else if (currentPhase === "game-over") {
+                            alert("Game Over, Reset Game");
+                        }
+                        checkGameOver();
+                    });
                 }
-                checkGameOver();
-            });
-        }
+            }
     }
-
+    else{
+        let gameboard1 = document.getElementById("game-grid-1");
+            for (let i = 0; i < gameboard1.rows.length - 1; i++) {
+                for (let j = 0; j < gameboard1.rows[i + 1].cells.length - 1; j++) {
+                    gameboard1.rows[j + 1].cells[i + 1].addEventListener("click", () => {
+                        if (currentPhase === "p1-ship") {
+                            placeShip(playerBoard, j, i, "Player 1");
+                        } else if (currentPhase === "p1-turn") {
+                            // do nothing if they click there own board during there turn
+                        } else if (currentPhase === "p2-ship") {
+                            // do nothing if enemy clicks p1 board during ship
+                        } else if (currentPhase === "p2-turn") {
+                            player2Hit(i, j);
+                        } else if (currentPhase === "game-over") {
+                            alert("Game Over, Reset Game");
+                        }
+                        checkGameOver();
+                    });
+                }
+            }
+    }
     // Adds event listener for the 'Start Game' button
-    document.getElementById("start").addEventListener("click", startGame);
+    
 })
 
 /*
@@ -457,28 +616,3 @@ const displayboard = (statebackboard, ID) => {
     }
 }
 
-/*
-* Method: checkBounds
-* Pre: Game is running, currentPhase in 'x-ship' phases
-* Params: 'ship': ship.js object; 'board': stateboard
-* Post: Verifies that a ship object does not violate any placement rules for a given board param
-*/
-const checkBounds = (ship, board) => {
-    for (let i = 0; i < ship.length; i++) {
-        if (ship == null || ship == {}) {
-            return false
-        }
-        let x = ship.List[i].coordinate.x;
-        let y = ship.List[i].coordinate.y;
-
-        if ((x < 0 || x > 8) || (y < 0 || y > 8)) {
-            return false;
-        }
-        else {
-            if (findSpace(x, y, board).state == 'Ship') {
-                return false
-            }
-        }
-    }
-    return true
-}

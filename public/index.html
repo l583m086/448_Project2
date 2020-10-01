@@ -16,7 +16,17 @@
     </header>
     <div id="flexContainer">
         <div id="sideBar">
+        <!-- Multiplayer Mode  -->
+        <button id="multiplayerMode">Multiplayer</button>
+        <!-- SinglePlayer Mode -->
+        <button id="singleplayerMode">Single Player</button>
+        <div id="level" style="display: none;">
+                <button id=easy>Easy</button> 
+                <button id=medium>Medium</button> 
+                <button id=hard>Hard</button>
+        </div>
             <!-- Start Button -->
+            <br/>
             <button id="start">Start Game</button>
             <!-- Player Instructions Section -->
             <div style="border: 1px solid black;">
@@ -25,7 +35,7 @@
             </div>
         </div>
         <div id="gameContainer">
-            <h2 class="centered">Player 1</h2>
+            <h2 class="centered" id="player1Id">Player 1</h2>
             <!-- Player 1 Game Board -->
             <table id="game-grid-1" class="game-grid">
                 <tbody>
@@ -232,7 +242,7 @@
                     </tr>
                 </tbody>
             </table>
-            <h2 class="centered">Player 2</h2>
+            <h2 class="centered" id="player2Id">Player 2</h2>
             <!-- Player 2 Game Board -->
             <table id="game-grid-2" class="game-grid">
                 <tbody>
