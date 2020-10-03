@@ -16,23 +16,41 @@
     </header>
     <div id="flexContainer">
         <div id="sideBar">
-        <!-- Multiplayer Mode  -->
-        <button id="multiplayerMode">Multiplayer</button>
-        <!-- SinglePlayer Mode -->
-        <button id="singleplayerMode">Single Player</button>
-        <div id="level" style="display: none;">
-                <button id=easy>Easy</button> 
-                <button id=medium>Medium</button> 
-                <button id=hard>Hard</button>
-        </div>
-            <!-- Start Button -->
-            <br/>
-            <button id="start">Start Game</button>
-            <!-- Player Instructions Section -->
-            <div style="border: 1px solid black;">
-                <h3>Instructions</h3>
-                <span id="instruction"></span>
-            </div>
+                <!-- Multiplayer Mode  -->
+                <button id="multiplayerMode">Multiplayer</button>
+                <!-- SinglePlayer Mode -->
+                <button id="singleplayerMode">Single Player</button>
+                <div id="level" style="display: none;">
+                        <button id=easy>Easy</button> 
+                        <button id=medium>Medium</button> 
+                        <button id=hard>Hard</button>
+                </div>
+                <!-- Start Button -->
+                <br/>
+                <button id="start">Start Game</button>
+                <!-- Player Instructions Section -->
+                <div style="border: 1px solid black;">
+                        <h3>Instructions</h3>
+                        <span id="instruction"></span>
+                </div>
+                <div id = "scoreboard">
+                        <h3></br>Scoreboard:</br>
+                        Player 1                                                              </br>
+                        - Ships Left: <strong id = "player1Score">?</strong>                  </br>
+                        - Ships Sunk: <strong id = "player1ShipsSunk">0</strong>              </br>
+                        - Hit Count:  <strong id = "player1HitCount">0</strong>               </br>
+                        - Miss Count: <strong id = "player1MissCount">0</strong>              </br>
+                        - Total Missles Fired: <strong id = "player1MisslesFired">0</strong>  </br>
+                        - Hit Accuracy: <strong id = "player1HitAccuracy">0%</strong></br></br>
+                        Computer AI                                                           </br>
+                        - Ships Left: <strong id = "player2Score">?</strong>                  </br>
+                        - Ships Sunk: <strong id = "AIShipsSunk">0</strong>                   </br>
+                        - Hit Count: <strong id = "AIHitCount">0</strong>                     </br>
+                        - Miss Count: <strong id = "AIMissCount">0</strong>                   </br>
+                        - Total Missles Fired: <strong id = "AIMisslesFired">0</strong>       </br>
+                        - Hit Accuracy: <strong id = "AIHitAccuracy">0%</strong>     </br></br>
+                        </h3>
+                        </div>    
         </div>
         <div id="gameContainer">
             <h2 class="centered" id="player1Id">Player 1</h2>
