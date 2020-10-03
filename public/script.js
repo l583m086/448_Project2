@@ -23,6 +23,7 @@ let mode = "";
 let level = "";
 let p1Ships = 0;
 let p2Ships = 0;
+let pShips = 0;
 
 const singlePlayerMode = document.querySelector('#singleplayerMode')
 const multiPlayerMode = document.querySelector('#multiplayerMode')
@@ -169,7 +170,7 @@ const placeShip = (board, x, y, player) => {
 
                 }
             }
-
+            
             if (valid) {
                 let s = new Ship((player == "Player 1" ? p1Ships : p2Ships) + 1, new Space(x, y), direction)
                 if (checkBounds(s, board)) {
@@ -286,6 +287,114 @@ const placeShip = (board, x, y, player) => {
             document.addEventListener('click', clickListener);
         }
     }
+}
+
+const singlePlayerPlaceShip = (board, x, y) => {
+    if(board[x][y] == "Ship"){
+        alert("Do not overlap the ships")
+    }
+    else{
+        document.querySelector("#instruction").innerText = "Use Arrow Keys to Orient\n\nPress Enter to Confirm Placement"
+        board[x][y].state = "Ship"
+        displayboard(board, '#game-grid-1')
+        board[x][y].state = "Empty"
+        let direction = ""
+        let done = false
+        document.addEventListener('keydown', keyListener)
+        function keyListener (e){
+            const clickListener = () => {
+                document.removeEventListener('keydown', enterListener);
+                document.removeEventListener('keydown', keyListener);
+            }
+            if (e.key == "ArrowLeft") {
+                direction = "left"
+                console.log(direction)
+            }
+            else if (e.key == "ArrowRight") {
+                direction = "right"
+                console.log(direction)
+            }
+            else if (e.key == "ArrowDown") {
+                direction = "down"
+                console.log(direction)
+            }
+            else if (e.key == "ArrowUp") {
+                direction = "up"
+                console.log(direction)
+            }
+            else if (e.key == "Enter") {
+                direction = direction
+                console.log(direction)
+            }
+            else {
+                direction = " "
+            }
+            let valid = true;
+
+            for (let ship of playerShips.ships) {
+                for (let space of ship.List) {
+                    console.log(valid)
+                    if (findSpace(space.coordinate.x, space.coordinate.y, board).state == "Ship" && space.coordinate.x == x && space.coordinate.y == y) {
+                        console.log("inside");
+                        valid = false;
+                        alert("Do not overlap ships");
+                        break;
+                    }
+                    else if (space.coordinate.x < 0 || space.coordinate.x > 8 || space.coordinate.y < 0 || space.coordinate.y > 8) {
+                        console.log("outside")
+                        valid = false;
+                        alert("Place ship on board")
+                    }
+
+                }
+            }
+        
+            if (valid) {
+                let s = new Ship(pShips + 1, new Space(x, y), direction)
+                
+                if (checkBounds(s, board)) {
+                    console.log(s)
+                    for (let space of s.List) {
+                        findSpace(space.coordinate.x, space.coordinate.y, board).state = "Ship"
+                    }
+
+                    displayboard(board, "#game-grid-1");
+
+                    for (let space of s.List) {
+                        findSpace(space.coordinate.x, space.coordinate.y, board).state = "Empty"
+                    }
+                }
+                else {
+                    console.log("checkbound false")
+                    displayboard(board, "#game-grid-1");
+                }
+            }
+        }
+
+        function enterListener(e) {
+            const clickListener = () => {
+                document.removeEventListener('keydown', enterListener);
+                document.removeEventListener('keydown', keyListener);
+            }
+        }
+
+        if (!done && ((pShips !== numberOfShips))) {
+            document.addEventListener('keydown', keyListener);
+            document.addEventListener('keydown', enterListener);
+            let clickCount = 0;
+            const clickListener = () => {
+                if (clickCount == 1) {
+                    document.removeEventListener('keydown', enterListener);
+                    document.removeEventListener('keydown', keyListener);
+                    document.removeEventListener('click', clickListener);
+                }
+                clickCount++
+            }
+
+            document.addEventListener('click', clickListener);
+        }
+    }
+    
 }
 
 function autoGenerateShip(board, numberOfShips){
@@ -451,7 +560,8 @@ const startSinglePlayerGame = () => {
         } while (numberOfShips < 0 || numberOfShips > 5 || isNaN(numberOfShips));
         autoGenerateShip(computerBoard, numberOfShips)
         displayboard(computerBoard, "#game-grid-2");
-        currentPhase = "p1-ship"
+        currentPhase = "p-ship"
+        single()
     }
 }
 
@@ -478,49 +588,17 @@ const startMultiplayerGame = () => {
             }
         } while (numberOfShips < 0 || numberOfShips > 5 || isNaN(numberOfShips));
         currentPhase = "p1-ship";
+        mode = "multiplayer"
         alert("Player 1, Place Ship #1")
+        multi()
     } else if (currentPhase === "game-over") {
         location.reload();
     } else {
         alert("You are mid-game, cannot start");
     }
 }
-
-/*
-* Method: gameOver
-* Pre: None
-* Params: winnerName: 'The winners board'
-* Post: Game is reset and winner is announced
-*/
-const gameOver = (winnerName) => {
-    clearBoard("#game-grid-1");
-    clearBoard("#game-grid-2");
-    console.log(`Game Won by: ${winnerName}`);
-    alert(`Game Won by: ${winnerName}`)
-    document.querySelector("#start").innerHTML = 'Reset Game';
-}
-
-/*
-* Method: clearBoard
-* Pre: None
-* Params: boardName: 'Name of the board being cleared'
-* Post: The game board cell values, styles, and onclicks are removed
-*/
-const clearBoard = (boardName) => {
-    let gameGrid = document.querySelector(boardName);
-    for (let i = 0; i < gameGrid.rows.length - 1; i++) {
-        for (let j = 0; j < gameGrid.rows[i + 1].cells.length - 1; j++) {
-            gameGrid.rows[j + 1].cells[i + 1].innerHTML = "";
-            gameGrid.rows[j + 1].cells[i + 1].style = "background-color:#0066ff;";
-            gameGrid.rows[j + 1].cells[i + 1].onclick = "";
-        }
-    }
-}
-
-// Adds HTML Table event listeners for handling battleship click events
-document.addEventListener("DOMContentLoaded", function () {
-    if(mode === "multiplayer"){
-            let gameboard1 = document.getElementById("game-grid-1");
+const multi = () =>{
+    let gameboard1 = document.getElementById("game-grid-1");
             for (let i = 0; i < gameboard1.rows.length - 1; i++) {
                 for (let j = 0; j < gameboard1.rows[i + 1].cells.length - 1; j++) {
                     gameboard1.rows[j + 1].cells[i + 1].addEventListener("click", () => {
@@ -559,20 +637,19 @@ document.addEventListener("DOMContentLoaded", function () {
                     });
                 }
             }
-    }
-    else{
-        let gameboard1 = document.getElementById("game-grid-1");
+}
+
+const single = () =>{
+    let gameboard1 = document.getElementById("game-grid-1");
             for (let i = 0; i < gameboard1.rows.length - 1; i++) {
                 for (let j = 0; j < gameboard1.rows[i + 1].cells.length - 1; j++) {
                     gameboard1.rows[j + 1].cells[i + 1].addEventListener("click", () => {
-                        if (currentPhase === "p1-ship") {
-                            placeShip(playerBoard, j, i, "Player 1");
-                        } else if (currentPhase === "p1-turn") {
+                        if (currentPhase === "p-ship") {
+                            singlePlayerPlaceShip(playerBoard, j, i);
+                        } else if (currentPhase === "p-turn") {
                             // do nothing if they click there own board during there turn
-                        } else if (currentPhase === "p2-ship") {
-                            // do nothing if enemy clicks p1 board during ship
-                        } else if (currentPhase === "p2-turn") {
-                            player2Hit(i, j);
+                        } else if (currentPhase === "ai-turn") {
+
                         } else if (currentPhase === "game-over") {
                             alert("Game Over, Reset Game");
                         }
@@ -580,10 +657,42 @@ document.addEventListener("DOMContentLoaded", function () {
                     });
                 }
             }
+}
+// document.addEventListener("DOMContentLoaded", multi)
+
+
+/*
+* Method: gameOver
+* Pre: None
+* Params: winnerName: 'The winners board'
+* Post: Game is reset and winner is announced
+*/
+const gameOver = (winnerName) => {
+    clearBoard("#game-grid-1");
+    clearBoard("#game-grid-2");
+    console.log(`Game Won by: ${winnerName}`);
+    alert(`Game Won by: ${winnerName}`)
+    document.querySelector("#start").innerHTML = 'Reset Game';
+}
+
+/*
+* Method: clearBoard
+* Pre: None
+* Params: boardName: 'Name of the board being cleared'
+* Post: The game board cell values, styles, and onclicks are removed
+*/
+const clearBoard = (boardName) => {
+    let gameGrid = document.querySelector(boardName);
+    for (let i = 0; i < gameGrid.rows.length - 1; i++) {
+        for (let j = 0; j < gameGrid.rows[i + 1].cells.length - 1; j++) {
+            gameGrid.rows[j + 1].cells[i + 1].innerHTML = "";
+            gameGrid.rows[j + 1].cells[i + 1].style = "background-color:#0066ff;";
+            gameGrid.rows[j + 1].cells[i + 1].onclick = "";
+        }
     }
-    // Adds event listener for the 'Start Game' button
-    
-})
+}
+
+// Adds HTML Table event listeners for handling battleship click events
 
 /*
 * Method: displayBoard
