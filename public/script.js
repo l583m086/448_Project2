@@ -365,7 +365,6 @@ const singlePlayerPlaceShip = (board, x, y) => {
                     }
                 }
                 else {
-                    console.log("checkbound false")
                     displayboard(board, "#game-grid-1");
                 }
             }
@@ -375,6 +374,50 @@ const singlePlayerPlaceShip = (board, x, y) => {
             const clickListener = () => {
                 document.removeEventListener('keydown', enterListener);
                 document.removeEventListener('keydown', keyListener);
+            }
+            let ship = {}
+            ship = new Ship(pShips + 1, new Space(x, y), direction)
+            if(e.key === "Enter"){
+                let ship = {}
+                if (direction !== "" || pShips === 0 ) {
+                    ship = new Ship(pShips + 1, new Space(x, y), direction)
+                    console.log(ship)
+                    if (checkBounds(ship, board)) {
+                        console.log("Check bound return true")
+                        if (direction === "up" || direction === "down" || direction === "right" || direction === "left" || pShips === 0) {
+                            console.log(direction)
+                            playerShips.addShip(new Ship(pShips + 1, new Space(x, y), direction));
+                            pShips++;
+                            for (let ship of playerShips.ships) {
+                                for (let space of ship.List) {
+                                    findSpace(space.coordinate.x, space.coordinate.y, board).state = "Ship"
+                                }
+                            }
+                            displayboard(board,"#game-grid-1");
+                            document.removeEventListener('keydown', keyListener);
+                            document.removeEventListener('keydown', enterListener)
+                            if (!(pShips == numberOfShips)) {
+                                let num = pShips + 1
+                                alert("Place Ship #" + num)
+                            }
+                            if (currentPhase === "p-ship" && pShips === numberOfShips) {
+                                alert("Player Place Ship Phase Complete");
+                                displayboard(playerBoard, "#game-grid-1");
+                                displayboard(playerOppBoard, "#game-grid-2");
+                            }
+                        }
+
+                    } else {
+                        alert("Invalid Ship, Try again")
+                        displayboard(board, "#game-grid-1");
+                        document.removeEventListener('keydown', keyListener);
+                        document.removeEventListener('click', clickListener);
+                        document.removeEventListener('keydown', enterListener);
+                    }
+                }
+                else {
+                    alert("Use Arrow Keys to Place")
+                }
             }
         }
 
@@ -561,6 +604,7 @@ const startSinglePlayerGame = () => {
         autoGenerateShip(computerBoard, numberOfShips)
         displayboard(computerBoard, "#game-grid-2");
         currentPhase = "p-ship"
+        alert("Place Ship #1");
         single()
     }
 }
