@@ -48,21 +48,25 @@ function startSinglePlayerMode(){
     document.querySelector('#medium').addEventListener("click", startMediumMode)
     document.querySelector('#hard').addEventListener("click", startHardMode)
     document.querySelector('#player1Id').innerText = "Player"
-    document.querySelector('#player2Id').innerText = "Computer"
+    document.querySelector('#player2Id').innerText = "AI"
+    
 }
 
 function startEasyMode(){
-    console.log("Easy Mode")
+    level = "easy"
+    console.log(level)
     startGameButton.addEventListener("click", startSinglePlayerGame)
 }
 
 function startMediumMode(){
-    console.log("Medium Mode")
+    level = "medium"
+    console.log(level)
     startGameButton.addEventListener("click", startSinglePlayerGame)
 }
 
 function startHardMode(){
-    console.log("Hard Mode")
+    level = "hard"
+    console.log(level)
     startGameButton.addEventListener("click", startSinglePlayerGame)
 }
 function startMultiPlayerMode(){
@@ -113,7 +117,7 @@ const placeShip = (board, x, y, player) => {
     if (board[x][y].state === "Ship") {
         alert("Do not double place ships!");
     } else {
-        document.querySelector("#instruction").innerText = "Use Arrow Keys to Orient\n\nPress Enter to Confirm Placement"
+        document.querySelector("#instruction").innerText = "Use Arrow Keys to Orient\nPress Enter to Confirm Placement"
         board[x][y].state = "Ship"
         displayboard(board, player === "Player 1" ? "#game-grid-1" : "#game-grid-2");
         board[x][y].state = "Empty"
@@ -294,7 +298,7 @@ const singlePlayerPlaceShip = (board, x, y) => {
         alert("Do not overlap the ships")
     }
     else{
-        document.querySelector("#instruction").innerText = "Use Arrow Keys to Orient\n\nPress Enter to Confirm Placement"
+        document.querySelector("#instruction").innerText = "Use Arrow Keys to Orient\nPress Enter to Confirm Placement"
         board[x][y].state = "Ship"
         displayboard(board, '#game-grid-1')
         board[x][y].state = "Empty"
@@ -385,7 +389,6 @@ const singlePlayerPlaceShip = (board, x, y) => {
                     if (checkBounds(ship, board)) {
                         console.log("Check bound return true")
                         if (direction === "up" || direction === "down" || direction === "right" || direction === "left" || pShips === 0) {
-                            console.log(direction)
                             playerShips.addShip(new Ship(pShips + 1, new Space(x, y), direction));
                             pShips++;
                             for (let ship of playerShips.ships) {
@@ -404,6 +407,7 @@ const singlePlayerPlaceShip = (board, x, y) => {
                                 alert("Player Place Ship Phase Complete");
                                 displayboard(playerBoard, "#game-grid-1");
                                 displayboard(playerOppBoard, "#game-grid-2");
+                                currentPhase = "p-turn"
                             }
                         }
 
@@ -513,19 +517,41 @@ const checkBounds = (ship, board) => {
 * Post: Game will end if all ships given are in a state of being sunken, changes phase to game-over if game is over
 */
 const checkGameOver = () => {
-    if (currentPhase !== "p1-turn" && currentPhase !== "p2-turn") {
-        return;
+    console.log("Check Game Over get called")
+    if(mode === "multiplayer"){
+        if (currentPhase !== "p1-turn" && currentPhase !== "p2-turn") {
+            return;
+        }
+        if (player1Ships.allSunk()) {
+            gameOver("Player 2");
+            currentPhase = "game-over";
+            return true;
+        } else if (player2Ships.allSunk()) {
+            gameOver("Player 1");
+            currentPhase = "game-over";
+            return true;
+        }
+        return false;
     }
-    if (player1Ships.allSunk()) {
-        gameOver("Player 2");
-        currentPhase = "game-over";
-        return true;
-    } else if (player2Ships.allSunk()) {
-        gameOver("Player 1");
-        currentPhase = "game-over";
-        return true;
+    else{
+        if (currentPhase !== "p-turn") {
+            return;
+        }
+        if (computerShips.allSunk()) {
+            console.log("Game Over")
+            gameOver("Player");
+            currentPhase = "game-over";
+            return true;
+        }
+        else if(playerShips.allSunk()){
+            console.log("Game Over")
+            gameOver("AI");
+            currentPhase = "game-over";
+            return true;
+        }
+        return false;
     }
-    return false;
+    
 }
 
 /*
@@ -583,9 +609,158 @@ const player2Hit = (x, y) => {
         displayboard(player1OppBoard, "#game-grid-2");
     }
 }
+/*
+* Method: playerHit
+* Pre: Game is running, currentPhase in 'p-turn'
+* Params: 'x': x-coordinate; 'y': y-coordinate;
+* Post: Player either hits or misses, new board state is displayed, changes phase on miss
+*/
+const playerHit = (x, y) => {
+    if (computerBoard[y][x].state === "Ship") {
+        alert("HIT!!!!!");
+        computerBoard[y][x].state = "Sunk";
+        playerOppBoard[y][x].state = "Hit";
+        computerShips.hit(y, x);
+        displayboard(playerBoard, '#game-grid-1')
+        displayboard(playerOppBoard, "#game-grid-2");
+        if(checkGameOver()){
+            return
+        }
+        currentPhase = "ai-turn"
+        generateAttack(level)
+    } else {
+        if (computerBoard[y][x].state !== "Sunk") {
+            alert("MISS");
+            playerOppBoard[y][x].state = "Miss";
+            displayboard(playerBoard, '#game-grid-1')
+            displayboard(playerOppBoard, "#game-grid-2");
+            
+            currentPhase = "ai-turn"
+            generateAttack(level)
+            
+        } else {
+            alert("Already fired there");
+            currentPhase = "p-turn";
+        }
+    }
+}
+
+const generateAttack = (level) =>{
+    console.log("generate attack get called")
+    displayboard(computerBoard, '#game-grid-2')
+    displayboard(computerOppBoard, '#game-grid-1')
+    if(level === "easy"){
+
+        let maxBound = 8
+        let minBound = 0
+        let randomXStart = 0
+        let randomYStart = 0
+        let state = ""
+        do{
+            randomXStart = Math.floor(Math.random()*(maxBound - minBound) + minBound)
+            randomYStart =  Math.floor(Math.random()*(maxBound - minBound) + minBound)
+            let state = computerOppBoard[randomXStart][randomYStart].state
+            
+        }while(state === "Miss" || state === "Hit" || state === "Sunk")
+        // Check if AI hits the ship
+        if (playerBoard[randomYStart][randomXStart].state === "Ship") {
+            alert("AI HIT!!!!!")
+            playerBoard[randomYStart][randomXStart].state = "Sunk";
+            computerOppBoard[randomYStart][randomXStart].state = "Hit";
+            playerShips.hit(randomYStart, randomXStart);
+            // Print AI moves
+            displayboard(computerOppBoard, "#game-grid-1");
+            displayboard(computerBoard, "#game-grid-2")
+            if(playerShips.allSunk()){
+                console.log("Game Over")
+                gameOver("AI");
+                currentPhase = "game-over";
+                return
+            }
+            document.querySelector("#instruction").innerText = "Use Enter Key to skip"
+            document.addEventListener('keydown', enterListener)
+            function enterListener(e){
+                if(e.key === "Enter"){
+                    displayboard(playerBoard, "#game-grid-1");
+                    displayboard(playerOppBoard, "#game-grid-2")
+                    currentPhase = "p-turn";
+                    document.querySelector("#instruction").innerText = "Use Left Click to Attack\nPress Enter to Confirm Attack"
+                    // checkGameOver()
+                }
+            }
+            
+        } else {
+            alert("AI MISS")
+            computerOppBoard[randomYStart][randomXStart].state = "Miss";
+            console.log("print AI moves")
+            displayboard(computerOppBoard, "#game-grid-1");
+            displayboard(computerBoard, "#game-grid-2")
+            document.querySelector("#instruction").innerText = "Press Enter Key To Skip"
+            document.addEventListener('keydown', enterListener)
+            function enterListener(e){
+                if(e.key === "Enter"){
+                    displayboard(playerBoard, "#game-grid-1");
+                    displayboard(playerOppBoard, "#game-grid-2")
+                    currentPhase = "p-turn";
+                    document.querySelector("#instruction").innerText = "Use Left Click to Attack\nPress Enter to Confirm Attack"
+                    checkGameOver();
+                }
+            }
+        }
+    }
+    else if(level === "medium"){
+        return
+    }
+    else if(level === "hard"){
+        let XStart = 0
+        let YStart = 0
+        let state = ""
+        for(let i = 0; i < 9; i++){
+            for(let j = 0; j < 9; j++){
+                console.log(playerBoard[i][j].state)
+                if(playerBoard[i][j].state === "Ship"){
+                    XStart = i
+                    YStart = j
+                    console.log(i)
+                    console.log(j)
+                    break
+                }
+            }
+        }
+        // Check if AI hits the ship
+        alert("AI HIT!!!!!")
+        playerBoard[XStart][YStart].state = "Sunk";
+        computerOppBoard[XStart][YStart].state = "Hit";
+        playerShips.hit(XStart, YStart);
+        // Print AI moves
+        displayboard(computerOppBoard, "#game-grid-1");
+        if(playerShips.allSunk()){
+            console.log("Game Over")
+            gameOver("AI");
+            currentPhase = "game-over";
+            return
+        }
+        displayboard(computerBoard, "#game-grid-2")
+        document.addEventListener('keydown', enterListener)
+        document.querySelector("#instruction").innerText = "Press Enter to skip"
+        function enterListener(e){
+            if(e.key === "Enter"){
+                displayboard(playerBoard, "#game-grid-1");
+                displayboard(playerOppBoard, "#game-grid-2")
+                currentPhase = "p-turn";
+                document.querySelector("#instruction").innerText = "Use Left Click to Attack\nPress Enter to Confirm Attack"
+                // checkGameOver()
+            }
+        }
+    }
+}
+
 
 const startSinglePlayerGame = () => {
     if(currentPhase === "starting"){
+        document.querySelector("#instruction").innerText = "Use Left Click to place ship"
+        document.getElementById('scoreboard').style.display = 'block'
+        document.getElementById('level').style.display = 'none'
         playerShips = new ShipContainer();
         computerShips = new ShipContainer();
         playerBoard = newBoard()
@@ -607,6 +782,11 @@ const startSinglePlayerGame = () => {
         alert("Place Ship #1");
         single()
     }
+    else if (currentPhase === "game-over") {
+        location.reload();
+    } else {
+        alert("You are mid-game, cannot start");
+    }
 }
 
 /*
@@ -617,6 +797,8 @@ const startSinglePlayerGame = () => {
 */
 const startMultiplayerGame = () => {
     if (currentPhase === "starting") {
+        document.querySelector("#instruction").innerText = "Use Left Click to place ship"
+        document.getElementById('scoreboard').style.display = 'block'
         player1Ships = new ShipContainer();
         player2Ships = new ShipContainer();
         player1Board = newBoard();
@@ -684,16 +866,17 @@ const multi = () =>{
 }
 
 const single = () =>{
-    let gameboard1 = document.getElementById("game-grid-1");
+    checkGameOver()
+        let gameboard1 = document.getElementById("game-grid-1");
             for (let i = 0; i < gameboard1.rows.length - 1; i++) {
                 for (let j = 0; j < gameboard1.rows[i + 1].cells.length - 1; j++) {
                     gameboard1.rows[j + 1].cells[i + 1].addEventListener("click", () => {
                         if (currentPhase === "p-ship") {
                             singlePlayerPlaceShip(playerBoard, j, i);
                         } else if (currentPhase === "p-turn") {
-                            // do nothing if they click there own board during there turn
+                            
                         } else if (currentPhase === "ai-turn") {
-
+    
                         } else if (currentPhase === "game-over") {
                             alert("Game Over, Reset Game");
                         }
@@ -701,6 +884,26 @@ const single = () =>{
                     });
                 }
             }
+    
+    let gameboard2 = document.getElementById("game-grid-2");
+            for (let i = 0; i < gameboard2.rows.length - 1; i++) {
+                for (let j = 0; j < gameboard2.rows[i + 1].cells.length - 1; j++) {
+                    gameboard2.rows[j + 1].cells[i + 1].addEventListener("click", (cell) => {
+                        if (currentPhase === "p-ship") {
+                            // do nothing if enemy clicks p1 board during ship
+                        } else if (currentPhase === "p-turn") {
+                            playerHit(i, j);
+                        } else if (currentPhase === "game-over") {
+                            alert("Game Over, Reset Game");
+                        }
+                        else if (currentPhase === "ai-turn") {
+    
+                        }
+                        checkGameOver();
+                    });
+                }
+            }
+    
 }
 // document.addEventListener("DOMContentLoaded", multi)
 
@@ -716,6 +919,7 @@ const gameOver = (winnerName) => {
     clearBoard("#game-grid-2");
     console.log(`Game Won by: ${winnerName}`);
     alert(`Game Won by: ${winnerName}`)
+    document.querySelector("#instruction").innerText = "Press Reset to restart the game"
     document.querySelector("#start").innerHTML = 'Reset Game';
 }
 

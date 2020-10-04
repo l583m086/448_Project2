@@ -30,6 +30,7 @@ export class ShipContainer {
     this.shipsCount++;
   }
 
+
   /*
   * Method: hit
   * Pre: Game is running, currentPhase in a 'x-turn' phase
@@ -59,6 +60,14 @@ export class ShipContainer {
   sinkShip = () => {
     this.sunkShips = this.sunkShips + 1;
     alert("You sunk my ship");
+  }
+
+  getSunkShips = () =>{
+    return this.sunkShips
+  }
+
+  getShipCount = () =>{
+    return this.shipsCount
   }
 
   /*
