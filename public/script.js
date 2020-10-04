@@ -28,6 +28,39 @@ let pShips = 0;
 const singlePlayerMode = document.querySelector('#singleplayerMode')
 const multiPlayerMode = document.querySelector('#multiplayerMode')
 const startGameButton = document.querySelector('#start')
+
+
+//Scoreboard Variables
+
+
+let p1HitCount = 0;
+let p2HitCount = 0;
+
+let p1MissCount = 0;
+let p2MissCount = 0;
+
+let p1MisslesFired = 0;
+let p2MisslesFired = 0;
+
+
+const m_player1Score = document.getElementById("player1Score");
+const m_player2Score = document.getElementById("player2Score");
+const m_player1ShipsSunk = document.getElementById("player1ShipsSunk");
+const m_player2ShipsSunk = document.getElementById("player2ShipsSunk");
+const m_player1HitCount = document.getElementById("player1HitCount");
+const m_player2HitCount = document.getElementById("player2HitCount");
+const m_player1MissCount = document.getElementById("player2MissCount");
+const m_player2MissCount = document.getElementById("player2MissCount");
+const m_player1MisslesFired = document.getElementById("player1MisslesFired");
+const m_player2MisslesFired = document.getElementById("player2MisslesFired");
+const m_player1HitAccuracy = document.getElementById("player1HitAccuracy");
+const m_player2HitAccuracy = document.getElementById("player2HitAccuracy");
+
+
+
+
+
+
 // End Global variables
 
 /*
@@ -227,9 +260,11 @@ const placeShip = (board, x, y, player) => {
                             if (player === "Player 1") {
                                 player1Ships.addShip(new Ship(p1Ships + 1, new Space(x, y), direction));
                                 p1Ships++;
+                                m_player1Score.innerHTML = p1Ships;
                             } else {
                                 player2Ships.addShip(new Ship(p2Ships + 1, new Space(x, y), direction));
                                 p2Ships++;
+                                m_player2Score.innerHTML = p2Ships;
                             }
                             for (let ship of (player === "Player 1" ? player1Ships.ships : player2Ships.ships)) {
                                 for (let space of ship.List) {
@@ -561,15 +596,23 @@ const checkGameOver = () => {
 * Post: Player either hits or misses, new board state is displayed, changes phase on miss
 */
 const player1Hit = (x, y) => {
+    p1MisslesFired += 1; //For Scoreboard
+    m_player1MisslesFired.innerHTML = p1MisslesFired; //For Scoreboard
     if (player2Board[y][x].state === "Ship") {
         alert("HIT!!!!!");
+        p1HitCount += 1; //For Scoreboard
+        m_player1HitCount.innerHTML = p1HitCount; //For Scoreboard
         player2Board[y][x].state = "Sunk";
         player1OppBoard[y][x].state = "Hit";
         player2Ships.hit(y, x);
+        m_player2Score.innerHTML = p2Ships - (player2Ships.sunkShips); //For Scoreboard
+        m_player1ShipsSunk.innerHTML = player2Ships.sunkShips; //For Scoreboard
         displayboard(player1OppBoard, "#game-grid-2");
     } else {
         if (player2Board[y][x].state !== "Sunk") {
             alert("MISS");
+            p1MissCount += 1; //For Scoreboard
+            m_player1MissCount.innerHTML = p1MissCount; //For Scoreboard
             player1OppBoard[y][x].state = "Miss";
         } else {
             alert("Already fired there");
@@ -580,6 +623,7 @@ const player1Hit = (x, y) => {
         displayboard(player2Board, "#game-grid-2");
         displayboard(player2OppBoard, "#game-grid-1");
     }
+    m_player1HitAccuracy.innerHTML = ((p1HitCount/p1MisslesFired)*100) + "%"; //For Scoreboard
 }
 
 /*
@@ -589,15 +633,23 @@ const player1Hit = (x, y) => {
 * Post: Player either hits or misses, new board state is displayed, changes phase on miss
 */
 const player2Hit = (x, y) => {
+    p2MisslesFired += 1; //For Scoreboard
+    m_player2MisslesFired.innerHTML = p2MisslesFired; //For Scoreboard
     if (player1Board[y][x].state === "Ship") {
         alert("HIT!!!!!");
+        p2HitCount += 1; //For Scoreboard
+        m_player2HitCount.innerHTML = p2HitCount; //For Scoreboard
         player1Board[y][x].state = "Sunk";
         player2OppBoard[y][x].state = "Hit";
         player1Ships.hit(y, x);
+        m_player1Score.innerHTML = p1Ships - (player1Ships.sunkShips); //For Scoreboard
+        m_player2ShipsSunk.innerHTML = player1Ships.sunkShips; //For Scoreboard
         displayboard(player2OppBoard, "#game-grid-1");
     } else {
         if (player1Board[y][x].state !== "Sunk") {
             alert("MISS");
+            p2MissCount += 1; //For Scoreboard
+            m_player2MissCount.innerHTML = p2MissCount; //For Scoreboard
             player2OppBoard[y][x].state = "Miss";
         } else {
             alert("Already fired there");
@@ -608,6 +660,7 @@ const player2Hit = (x, y) => {
         displayboard(player1Board, "#game-grid-1");
         displayboard(player1OppBoard, "#game-grid-2");
     }
+    m_player2HitAccuracy.innerHTML = ((p2HitCount/p2MisslesFired)*100) + "%"; //For Scoreboard
 }
 /*
 * Method: playerHit
@@ -616,11 +669,17 @@ const player2Hit = (x, y) => {
 * Post: Player either hits or misses, new board state is displayed, changes phase on miss
 */
 const playerHit = (x, y) => {
+    p1MisslesFired += 1; //For Scoreboard
+    m_player1MisslesFired.innerHTML = p1MisslesFired; //For Scoreboard
     if (computerBoard[y][x].state === "Ship") {
         alert("HIT!!!!!");
+        p1HitCount += 1; //For Scoreboard
+        m_player1HitCount.innerHTML = p1HitCount; //For Scoreboard
         computerBoard[y][x].state = "Sunk";
         playerOppBoard[y][x].state = "Hit";
         computerShips.hit(y, x);
+        m_player2Score.innerHTML = p2Ships - (player2Ships.sunkShips); //For Scoreboard
+        m_player1ShipsSunk.innerHTML = player2Ships.sunkShips; //For Scoreboard
         displayboard(playerBoard, '#game-grid-1')
         displayboard(playerOppBoard, "#game-grid-2");
         if(checkGameOver()){
@@ -631,6 +690,8 @@ const playerHit = (x, y) => {
     } else {
         if (computerBoard[y][x].state !== "Sunk") {
             alert("MISS");
+            p1MissCount += 1; //For Scoreboard
+            m_player1MissCount.innerHTML = p1MissCount; //For Scoreboard
             playerOppBoard[y][x].state = "Miss";
             displayboard(playerBoard, '#game-grid-1')
             displayboard(playerOppBoard, "#game-grid-2");
@@ -643,6 +704,7 @@ const playerHit = (x, y) => {
             currentPhase = "p-turn";
         }
     }
+    m_player1HitAccuracy.innerHTML = ((p1HitCount/p1MisslesFired)*100) + "%"; //For Scoreboard
 }
 
 const generateAttack = (level) =>{
@@ -663,11 +725,17 @@ const generateAttack = (level) =>{
             
         }while(state === "Miss" || state === "Hit" || state === "Sunk")
         // Check if AI hits the ship
+        p2MisslesFired += 1; //For Scoreboard
+        m_player2MisslesFired.innerHTML = p2MisslesFired; //For Scoreboard
         if (playerBoard[randomYStart][randomXStart].state === "Ship") {
             alert("AI HIT!!!!!")
+            p2HitCount += 1; //For Scoreboard
+            m_player2HitCount.innerHTML = p2HitCount; //For Scoreboard
             playerBoard[randomYStart][randomXStart].state = "Sunk";
             computerOppBoard[randomYStart][randomXStart].state = "Hit";
             playerShips.hit(randomYStart, randomXStart);
+            m_player1Score.innerHTML = p1Ships - (player1Ships.sunkShips); //For Scoreboard
+            m_player2ShipsSunk.innerHTML = player1Ships.sunkShips; //For Scoreboard
             // Print AI moves
             displayboard(computerOppBoard, "#game-grid-1");
             displayboard(computerBoard, "#game-grid-2")
@@ -691,6 +759,8 @@ const generateAttack = (level) =>{
             
         } else {
             alert("AI MISS")
+            p2MissCount += 1; //For Scoreboard
+            m_player2MissCount.innerHTML = p2MissCount; //For Scoreboard
             computerOppBoard[randomYStart][randomXStart].state = "Miss";
             console.log("print AI moves")
             displayboard(computerOppBoard, "#game-grid-1");
@@ -707,6 +777,7 @@ const generateAttack = (level) =>{
                 }
             }
         }
+        m_player2HitAccuracy.innerHTML = ((p2HitCount/p2MisslesFired)*100) + "%"; //For Scoreboard
     }
     else if(level === "medium"){
         return
@@ -727,11 +798,18 @@ const generateAttack = (level) =>{
                 }
             }
         }
+        p2MisslesFired += 1; //For Scoreboard
+        m_player2MisslesFired.innerHTML = p2MisslesFired; //For Scoreboard
         // Check if AI hits the ship
         alert("AI HIT!!!!!")
+        p2HitCount += 1; //For Scoreboard
+        m_player2HitCount.innerHTML = p2HitCount; //For Scoreboard
         playerBoard[XStart][YStart].state = "Sunk";
         computerOppBoard[XStart][YStart].state = "Hit";
         playerShips.hit(XStart, YStart);
+        m_player1Score.innerHTML = p1Ships - (player1Ships.sunkShips); //For Scoreboard
+        m_player2ShipsSunk.innerHTML = player1Ships.sunkShips; //For Scoreboard
+        m_player2HitAccuracy.innerHTML = "100%"; //For Scoreboard
         // Print AI moves
         displayboard(computerOppBoard, "#game-grid-1");
         if(playerShips.allSunk()){
@@ -776,6 +854,10 @@ const startSinglePlayerGame = () => {
                 alert("Invalid Input");
             }
         } while (numberOfShips < 0 || numberOfShips > 5 || isNaN(numberOfShips));
+        p1Ships = numberOfShips; //For Scoreboard
+        p2Ships = numberOfShips; //For Scoreboard
+        m_player1Score.innerHTML = p1Ships;
+        m_player2Score.innerHTML = p2Ships;
         autoGenerateShip(computerBoard, numberOfShips)
         displayboard(computerBoard, "#game-grid-2");
         currentPhase = "p-ship"
