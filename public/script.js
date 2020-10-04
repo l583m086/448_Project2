@@ -42,7 +42,6 @@ multiPlayerMode.addEventListener("click", startMultiPlayerMode)
 
 function startSinglePlayerMode(){
     mode = "singlePlayer"
-    console.log(mode);
     document.getElementById('level').style.display = 'block'
     document.querySelector('#easy').addEventListener("click", startEasyMode)
     document.querySelector('#medium').addEventListener("click", startMediumMode)
@@ -54,19 +53,16 @@ function startSinglePlayerMode(){
 
 function startEasyMode(){
     level = "easy"
-    console.log(level)
     startGameButton.addEventListener("click", startSinglePlayerGame)
 }
 
 function startMediumMode(){
     level = "medium"
-    console.log(level)
     startGameButton.addEventListener("click", startSinglePlayerGame)
 }
 
 function startHardMode(){
     level = "hard"
-    console.log(level)
     startGameButton.addEventListener("click", startSinglePlayerGame)
 }
 function startMultiPlayerMode(){
@@ -645,6 +641,9 @@ const playerHit = (x, y) => {
     }
 }
 
+let mediumRowPastMove = -1
+let mediumColPastMove = -1
+
 const generateAttack = (level) =>{
     console.log("generate attack get called")
     displayboard(computerBoard, '#game-grid-2')
@@ -665,9 +664,7 @@ const generateAttack = (level) =>{
         // Check if AI hits the ship
         if (playerBoard[randomYStart][randomXStart].state === "Ship") {
             alert("AI HIT!!!!!")
-            playerBoard[randomYStart][randomXStart].state = "Sunk";
-            computerOppBoard[randomYStart][randomXStart].state = "Hit";
-            playerShips.hit(randomYStart, randomXStart);
+            makeBoardChanges(playerBoard, computerOppBoard,playerShips, XStart, YStart);
             // Print AI moves
             displayboard(computerOppBoard, "#game-grid-1");
             displayboard(computerBoard, "#game-grid-2")
@@ -709,7 +706,236 @@ const generateAttack = (level) =>{
         }
     }
     else if(level === "medium"){
-        return
+        //Check if the last move was a hit or miss
+        if((mediumRowPastMove === -1) || (mediumColPastMove === -1)){
+        //If last move was a miss, generate a random attack
+            let maxBound = 8
+            let minBound = 0
+            let randomRowStart = 0
+            let randomColStart = 0
+            let state = ""
+            do{
+                randomRowStart = Math.floor(Math.random()*(maxBound - minBound) + minBound)
+                randomColStart =  Math.floor(Math.random()*(maxBound - minBound) + minBound)
+                let state = computerOppBoard[randomRowStart][randomColStart].state
+                
+            }while(state === "Miss" || state === "Hit" || state === "Sunk")
+            // Check if AI hits the ship
+            if (playerBoard[randomRowStart][randomColStart].state === "Ship") {
+                //If this random attack is a hit save it to the past move
+                mediumRowPastMove = randomRowStart
+                mediumColPastMove = randomColStart
+                alert("AI HIT!!!!!")
+                makeBoardChanges(playerBoard, computerOppBoard,playerShips, randomRowStart, randomColStart);
+                // Print AI moves
+                displayboard(computerOppBoard, "#game-grid-1");
+                displayboard(computerBoard, "#game-grid-2")
+                if(playerShips.allSunk()){
+                    console.log("Game Over")
+                    gameOver("AI");
+                    currentPhase = "game-over";
+                    return
+                }
+                document.querySelector("#instruction").innerText = "Use Enter Key to skip"
+                document.addEventListener('keydown', enterListener)
+                function enterListener(e){
+                    if(e.key === "Enter"){
+                        displayboard(playerBoard, "#game-grid-1");
+                        displayboard(playerOppBoard, "#game-grid-2")
+                        currentPhase = "p-turn";
+                        document.querySelector("#instruction").innerText = "Use Left Click to Attack\nPress Enter to Confirm Attack"
+                        // checkGameOver()
+                    }
+                }
+                
+            } else {
+                // If the attack the was a miss, set the past move back to -1
+                alert("AI MISS")
+                mediumRowPastMove = -1
+                mediumColPastMove = -1
+                computerOppBoard[randomRowStart][randomColStart].state = "Miss";
+                displayboard(computerOppBoard, "#game-grid-1");
+                displayboard(computerBoard, "#game-grid-2")
+                document.querySelector("#instruction").innerText = "Press Enter Key To Skip"
+                document.addEventListener('keydown', enterListener)
+                function enterListener(e){
+                    if(e.key === "Enter"){
+                        displayboard(playerBoard, "#game-grid-1");
+                        displayboard(playerOppBoard, "#game-grid-2")
+                        currentPhase = "p-turn";
+                        document.querySelector("#instruction").innerText = "Use Left Click to Attack\nPress Enter to Confirm Attack"
+                        checkGameOver();
+                    }
+                }
+            }
+        }
+        else{
+            // If past move was a hit, check around if there is another ship space
+            // Check up
+            if((mediumRowPastMove) > 0 && (playerBoard[mediumRowPastMove - 1][mediumColPastMove].state === "Ship")){
+                makeBoardChanges(playerBoard, computerOppBoard,playerShips, mediumRowPastMove - 1, mediumColPastMove);
+                mediumRowPastMove -= 1
+                alert("AI HIT!!!!!")
+                displayboard(computerOppBoard, "#game-grid-1");
+                displayboard(computerBoard, "#game-grid-2")
+                if(playerShips.allSunk()){
+                    console.log("Game Over")
+                    gameOver("AI");
+                    currentPhase = "game-over";
+                    return
+                }
+                document.querySelector("#instruction").innerText = "Use Enter Key to skip"
+                document.addEventListener('keydown', enterListener)
+                function enterListener(e){
+                    if(e.key === "Enter"){
+                        displayboard(playerBoard, "#game-grid-1");
+                        displayboard(playerOppBoard, "#game-grid-2")
+                        currentPhase = "p-turn";
+                        document.querySelector("#instruction").innerText = "Use Left Click to Attack\nPress Enter to Confirm Attack"
+                        // checkGameOver()
+                    }
+                }
+            }
+            //Check right
+            else if((mediumColPastMove) < 8 && (playerBoard[mediumRowPastMove][mediumColPastMove + 1].state === "Ship")){
+                makeBoardChanges(playerBoard, computerOppBoard,playerShips, mediumRowPastMove, mediumColPastMove + 1);
+                mediumColPastMove += 1
+                alert("AI HIT!!!!!")
+                displayboard(computerOppBoard, "#game-grid-1");
+                displayboard(computerBoard, "#game-grid-2")
+                if(playerShips.allSunk()){
+                    console.log("Game Over")
+                    gameOver("AI");
+                    currentPhase = "game-over";
+                    return
+                }
+                document.querySelector("#instruction").innerText = "Use Enter Key to skip"
+                document.addEventListener('keydown', enterListener)
+                function enterListener(e){
+                    if(e.key === "Enter"){
+                        displayboard(playerBoard, "#game-grid-1");
+                        displayboard(playerOppBoard, "#game-grid-2")
+                        currentPhase = "p-turn";
+                        document.querySelector("#instruction").innerText = "Use Left Click to Attack\nPress Enter to Confirm Attack"
+                        // checkGameOver()
+                    }
+                }
+            }
+            //Check down
+            else if((mediumRowPastMove) < 8 && (playerBoard[mediumRowPastMove + 1][mediumColPastMove].state === "Ship")){
+                makeBoardChanges(playerBoard, computerOppBoard,playerShips, mediumColPastMove + 1, mediumColPastMove);
+                mediumRowPastMove += 1
+                alert("AI HIT!!!!!")
+                displayboard(computerOppBoard, "#game-grid-1");
+                displayboard(computerBoard, "#game-grid-2")
+                if(playerShips.allSunk()){
+                    console.log("Game Over")
+                    gameOver("AI");
+                    currentPhase = "game-over";
+                    return
+                }
+                document.querySelector("#instruction").innerText = "Use Enter Key to skip"
+                document.addEventListener('keydown', enterListener)
+                function enterListener(e){
+                    if(e.key === "Enter"){
+                        displayboard(playerBoard, "#game-grid-1");
+                        displayboard(playerOppBoard, "#game-grid-2")
+                        currentPhase = "p-turn";
+                        document.querySelector("#instruction").innerText = "Use Left Click to Attack\nPress Enter to Confirm Attack"
+                        // checkGameOver()
+                    }
+                }
+            }
+            //Check left
+            else if((mediumColPastMove) > 0 && (playerBoard[mediumRowPastMove][mediumColPastMove - 1].state === "Ship")){
+                makeBoardChanges(playerBoard, computerOppBoard,playerShips, mediumRowPastMove, mediumColPastMove - 1);
+                mediumColPastMove -= 1
+                alert("AI HIT!!!!!")
+                displayboard(computerOppBoard, "#game-grid-1");
+                displayboard(computerBoard, "#game-grid-2")
+                if(playerShips.allSunk()){
+                    console.log("Game Over")
+                    gameOver("AI");
+                    currentPhase = "game-over";
+                    return
+                }
+                document.querySelector("#instruction").innerText = "Use Enter Key to skip"
+                document.addEventListener('keydown', enterListener)
+                function enterListener(e){
+                    if(e.key === "Enter"){
+                        displayboard(playerBoard, "#game-grid-1");
+                        displayboard(playerOppBoard, "#game-grid-2")
+                        currentPhase = "p-turn";
+                        document.querySelector("#instruction").innerText = "Use Left Click to Attack\nPress Enter to Confirm Attack"
+                        // checkGameOver()
+                    }
+                }
+            }
+            // If there is no Ship arround, shoot randomly
+            else{
+                let maxBound = 8
+                let minBound = 0
+                let randomRowStart = 0
+                let randomColStart = 0
+                let state = ""
+                do{
+                    randomRowStart = Math.floor(Math.random()*(maxBound - minBound) + minBound)
+                    randomColStart =  Math.floor(Math.random()*(maxBound - minBound) + minBound)
+                    let state = computerOppBoard[randomRowStart][randomColStart].state
+                    
+                }while(state === "Miss" || state === "Hit" || state === "Sunk")
+                // Check if AI hits the ship
+                if (playerBoard[randomRowStart][randomColStart].state === "Ship") {
+                    //If this random attack is a hit save it to the past move
+                    mediumRowPastMove = randomRowStart
+                    mediumColPastMove = randomColStart
+                    alert("AI HIT!!!!!")
+                    makeBoardChanges(playerBoard, computerOppBoard,playerShips, randomRowStart, randomColStart);
+                    // Print AI moves
+                    displayboard(computerOppBoard, "#game-grid-1");
+                    displayboard(computerBoard, "#game-grid-2")
+                    if(playerShips.allSunk()){
+                        console.log("Game Over")
+                        gameOver("AI");
+                        currentPhase = "game-over";
+                        return
+                    }
+                    document.querySelector("#instruction").innerText = "Use Enter Key to skip"
+                    document.addEventListener('keydown', enterListener)
+                    function enterListener(e){
+                        if(e.key === "Enter"){
+                            displayboard(playerBoard, "#game-grid-1");
+                            displayboard(playerOppBoard, "#game-grid-2")
+                            currentPhase = "p-turn";
+                            document.querySelector("#instruction").innerText = "Use Left Click to Attack\nPress Enter to Confirm Attack"
+                            // checkGameOver()
+                        }
+                    }
+                    
+                } else {
+                    // If the attack the was a miss, set the past move back to -1
+                    alert("AI MISS")
+                    mediumRowPastMove = -1
+                    mediumColPastMove = -1
+
+                    computerOppBoard[randomRowStart][randomColStart].state = "Miss";
+                    displayboard(computerOppBoard, "#game-grid-1");
+                    displayboard(computerBoard, "#game-grid-2")
+                    document.querySelector("#instruction").innerText = "Press Enter Key To Skip"
+                    document.addEventListener('keydown', enterListener)
+                    function enterListener(e){
+                        if(e.key === "Enter"){
+                            displayboard(playerBoard, "#game-grid-1");
+                            displayboard(playerOppBoard, "#game-grid-2")
+                            currentPhase = "p-turn";
+                            document.querySelector("#instruction").innerText = "Use Left Click to Attack\nPress Enter to Confirm Attack"
+                            checkGameOver();
+                        }
+                    }
+                }
+            }
+        }
+        
     }
     else if(level === "hard"){
         let XStart = 0
@@ -721,17 +947,13 @@ const generateAttack = (level) =>{
                 if(playerBoard[i][j].state === "Ship"){
                     XStart = i
                     YStart = j
-                    console.log(i)
-                    console.log(j)
                     break
                 }
             }
         }
         // Check if AI hits the ship
         alert("AI HIT!!!!!")
-        playerBoard[XStart][YStart].state = "Sunk";
-        computerOppBoard[XStart][YStart].state = "Hit";
-        playerShips.hit(XStart, YStart);
+        makeBoardChanges(playerBoard, computerOppBoard,playerShips, XStart, YStart);
         // Print AI moves
         displayboard(computerOppBoard, "#game-grid-1");
         if(playerShips.allSunk()){
@@ -753,6 +975,13 @@ const generateAttack = (level) =>{
             }
         }
     }
+}
+
+function makeBoardChanges(currentBoard, oppBoard, ships, row, col){
+    currentBoard[row][col].state = "Sunk";
+    oppBoard[row][col].state = "Hit";
+    ships.hit(row, col);
+    return;
 }
 
 
@@ -788,6 +1017,7 @@ const startSinglePlayerGame = () => {
         alert("You are mid-game, cannot start");
     }
 }
+
 
 /*
 * Method: startMultiplayerGame
