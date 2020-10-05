@@ -55,7 +55,7 @@ const m_player1MisslesFired = document.getElementById("player1MisslesFired");
 const m_player2MisslesFired = document.getElementById("player2MisslesFired");
 const m_player1HitAccuracy = document.getElementById("player1HitAccuracy");
 const m_player2HitAccuracy = document.getElementById("player2HitAccuracy");
-
+const m_aiNameChange = document.getElementById("aiName");
 
 
 
@@ -73,6 +73,12 @@ const m_player2HitAccuracy = document.getElementById("player2HitAccuracy");
 singlePlayerMode.addEventListener("click", startSinglePlayerMode)
 multiPlayerMode.addEventListener("click", startMultiPlayerMode)
 
+/*
+* Method: startSinglePlayerMode
+* Pre Conditions: None
+* Parameters: None
+* Post Conditions: Starts the single player mode, adds easy, medium, and hard mode options, and changes player IDs to "Player" and "AI"
+*/
 function startSinglePlayerMode(){
     document.querySelector("#instruction").innerText = "Single Player Mode"
     document.getElementById("multiplayerMode").disabled = true;
@@ -84,36 +90,62 @@ function startSinglePlayerMode(){
     document.querySelector('#hard').addEventListener("click", startHardMode)
     document.querySelector('#player1Id').innerText = "Player"
     document.querySelector('#player2Id').innerText = "AI"
-    
+    m_aiNameChange.innerHTML = "AI"
 }
 
+/*
+* Method: startEasyMode
+* Pre Conditions: 'generateAttack' must be active
+* Parameters: none
+* Post Conditions: AI is placed on easy difficulty
+*/
 function startEasyMode(){
     level = "easy"
     startGameButton.addEventListener("click", startSinglePlayerGame)
 }
 
+/*
+* Method: startEasyMode
+* Pre Conditions: 'generateAttack' must be active
+* Parameters: none
+* Post Conditions: AI is placed on medium difficulty
+*/
 function startMediumMode(){
     level = "medium"
     startGameButton.addEventListener("click", startSinglePlayerGame)
 }
 
+/*
+* Method: startEasyMode
+* Pre Conditions: 'generateAttack' must be active
+* Parameters: none
+* Post Conditions: AI is placed on hard difficulty
+*/
 function startHardMode(){
     level = "hard"
     startGameButton.addEventListener("click", startSinglePlayerGame)
 }
+
+/*
+* Method: startMultiPlayerMode
+* Pre Conditions: None
+* Parameters: None
+* Post Conditions: Enables the display(s) on HTML and CSS to interact with the multiplayer mode of the game
+*/
 function startMultiPlayerMode(){
     document.querySelector("#instruction").innerText = "Multiplayer Player Mode"
     document.getElementById("singleplayerMode").disabled = true;
     document.getElementById("multiplayerMode").disabled = false;
     mode = "multiplayer"
+    m_aiNameChange.innerHTML = "Player 2"
     document.getElementById('level').style.display = 'none'
     document.querySelector('#player1Id').innerText = "Player1"
     document.querySelector('#player2Id').innerText = "Player2"
     startGameButton.addEventListener("click", startMultiplayerGame);
 }
 const newBoard = () => {
-    // Coordinate not exactly what you think it is. 
-    // To go South of board from top right you need to do +x and to go north -x and same for y +y to go right and -y to go left. 
+    // Coordinate not exactly what you think it is.
+    // To go South of board from top right you need to do +x and to go north -x and same for y +y to go right and -y to go left.
     let board = [];
     for (let y = 0; y < 9; y++) {
         let row = []
@@ -209,7 +241,7 @@ const placeShip = (board, x, y, player) => {
 
                 }
             }
-            
+
             if (valid) {
                 let s = new Ship((player == "Player 1" ? p1Ships : p2Ships) + 1, new Space(x, y), direction)
                 if (checkBounds(s, board)) {
@@ -330,6 +362,12 @@ const placeShip = (board, x, y, player) => {
     }
 }
 
+/*
+* Method: singlePlayerPlaceShip
+* Pre Conditions: Checks to make sure ships are not overlapping
+* Parameters: board, x, y
+* Post Conditions: Allows player 1 to place ships in the single player mode
+*/
 const singlePlayerPlaceShip = (board, x, y) => {
     if(board[x][y] == "Ship"){
         alert("Do not overlap the ships")
@@ -389,10 +427,10 @@ const singlePlayerPlaceShip = (board, x, y) => {
 
                 }
             }
-        
+
             if (valid) {
                 let s = new Ship(pShips + 1, new Space(x, y), direction)
-                
+
                 if (checkBounds(s, board)) {
                     console.log(s)
                     for (let space of s.List) {
@@ -478,9 +516,15 @@ const singlePlayerPlaceShip = (board, x, y) => {
             document.addEventListener('click', clickListener);
         }
     }
-    
+
 }
 
+/*
+* Method: autoGenerateShip
+* Pre Conditions: Checks for a valid starting place and a valid ship
+* Parameters: board, numberOfShips
+* Post Conditions: If the starting place and ship are valid, the ship is added to the ship container for the AI in single player mode
+*/
 function autoGenerateShip(board, numberOfShips){
     let directions = ['up', 'down', 'left', 'right']
     let maxBound = 8
@@ -494,7 +538,7 @@ function autoGenerateShip(board, numberOfShips){
     for(let i = 0; i < numberOfShips; i++){
         valid = false
         // Check if start place is not taken
-        
+
         // Check if the ship is valid
         do{
             do{
@@ -588,7 +632,7 @@ const checkGameOver = () => {
         }
         return false;
     }
-    
+
 }
 
 /*
@@ -697,10 +741,10 @@ const playerHit = (x, y) => {
             playerOppBoard[y][x].state = "Miss";
             displayboard(playerBoard, '#game-grid-1')
             displayboard(playerOppBoard, "#game-grid-2");
-            
+
             currentPhase = "ai-turn"
             generateAttack(level)
-            
+
         } else {
             alert("Already fired there");
             currentPhase = "p-turn";
@@ -727,7 +771,7 @@ const generateAttack = (level) =>{
             randomRowStart = Math.floor(Math.random()*(maxBound - minBound) + minBound)
             randomColStart =  Math.floor(Math.random()*(maxBound - minBound) + minBound)
             let state = computerOppBoard[randomRowStart][randomColStart].state
-            
+
         }while(state === "Miss" || state === "Hit" || state === "Sunk")
         // Check if AI hits the ship
         p2MisslesFired += 1; //For Scoreboard
@@ -757,7 +801,7 @@ const generateAttack = (level) =>{
                     // checkGameOver()
                 }
             }
-            
+
         } else {
             alert("AI MISS")
             p2MissCount += 1; //For Scoreboard
@@ -793,7 +837,7 @@ const generateAttack = (level) =>{
                 randomRowStart = Math.floor(Math.random()*(maxBound - minBound) + minBound)
                 randomColStart =  Math.floor(Math.random()*(maxBound - minBound) + minBound)
                 state = computerOppBoard[randomRowStart][randomColStart].state
-                
+
             }while(state === "Miss" || state === "Hit" || state === "Sunk")
             // Check if AI hits the ship
             p2MisslesFired += 1; //For Scoreboard
@@ -830,7 +874,7 @@ const generateAttack = (level) =>{
                         // checkGameOver()
                     }
                 }
-                
+
             } else {
                 // If the attack the was a miss, set the past move back to -1
                 alert("AI MISS")
@@ -983,7 +1027,7 @@ const generateAttack = (level) =>{
                     rowStart = Math.floor(Math.random()*(max - min) + min)
                     colStart =  Math.floor(Math.random()*(max - min) + min)
                     state = computerOppBoard[rowStart][colStart].state
-                    
+
                 }while(state === "Miss" || state === "Hit" || state === "Sunk")
                 // Check if AI hits the ship
                 console.log("Shoot randomly since there's no ships around")
@@ -1016,7 +1060,7 @@ const generateAttack = (level) =>{
                             // checkGameOver()
                         }
                     }
-                    
+
                 } else {
                     // If the attack the was a miss, set the past move back to -1
                     console.log("That random shoot was a miss")
@@ -1099,7 +1143,12 @@ function makeBoardChanges(currentBoard, oppBoard, ships, row, col){
     return;
 }
 
-
+/*
+* Method: startSinglePlayerGame
+* Pre Conditions: None
+* Parameters: None
+* Post Conditions: Starts game if not started, and changes the phase to ship placement, displays board, resets game if game-over phase occurs
+*/
 const startSinglePlayerGame = () => {
     if(currentPhase === "starting"){
         document.querySelector("#instruction").innerText = "Use Left Click to place ship"
@@ -1140,7 +1189,7 @@ const startSinglePlayerGame = () => {
 
 /*
 * Method: startMultiplayerGame
-* Pre: None 
+* Pre: None
 * Params: None
 * Post: Starts game if not started, changes phase to ship placement, displays board, resets game if game-over phase
 */
@@ -1172,6 +1221,13 @@ const startMultiplayerGame = () => {
         alert("You are mid-game, cannot start");
     }
 }
+
+/*
+* Method: multi
+* Pre Conditions: None
+* Parameters: None
+* Post Conditions: Checks for different phases in multiplayer including game over
+*/
 const multi = () =>{
     let gameboard1 = document.getElementById("game-grid-1");
             for (let i = 0; i < gameboard1.rows.length - 1; i++) {
@@ -1214,6 +1270,12 @@ const multi = () =>{
             }
 }
 
+/*
+* Method: single
+* Pre Conditions: None
+* Parameters: None
+* Post Conditions: Checks for different phases in singleplayer mode including game over
+*/
 const single = () =>{
     checkGameOver()
         let gameboard1 = document.getElementById("game-grid-1");
@@ -1223,9 +1285,9 @@ const single = () =>{
                         if (currentPhase === "p-ship") {
                             singlePlayerPlaceShip(playerBoard, j, i);
                         } else if (currentPhase === "p-turn") {
-                            
+
                         } else if (currentPhase === "ai-turn") {
-    
+
                         } else if (currentPhase === "game-over") {
                             alert("Game Over, Reset Game");
                         }
@@ -1233,7 +1295,7 @@ const single = () =>{
                     });
                 }
             }
-    
+
     let gameboard2 = document.getElementById("game-grid-2");
             for (let i = 0; i < gameboard2.rows.length - 1; i++) {
                 for (let j = 0; j < gameboard2.rows[i + 1].cells.length - 1; j++) {
@@ -1246,13 +1308,13 @@ const single = () =>{
                             alert("Game Over, Reset Game");
                         }
                         else if (currentPhase === "ai-turn") {
-    
+
                         }
                         checkGameOver();
                     });
                 }
             }
-    
+
 }
 // document.addEventListener("DOMContentLoaded", multi)
 
@@ -1321,4 +1383,3 @@ const displayboard = (statebackboard, ID) => {
         }
     }
 }
-
