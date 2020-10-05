@@ -58,17 +58,8 @@ const m_player2HitAccuracy = document.getElementById("player2HitAccuracy");
 const m_aiNameChange = document.getElementById("aiName");
 
 
-
-
-
 // End Global variables
 
-/*
-* Method: newBoard
-* Pre: None
-* Params: None
-* Post: new stateboard/backboard is generated (9x9 board)
-*/
 
 singlePlayerMode.addEventListener("click", startSinglePlayerMode)
 multiPlayerMode.addEventListener("click", startMultiPlayerMode)
@@ -143,6 +134,13 @@ function startMultiPlayerMode(){
     document.querySelector('#player2Id').innerText = "Player2"
     startGameButton.addEventListener("click", startMultiplayerGame);
 }
+
+/*
+* Method: newBoard
+* Pre: None
+* Params: None
+* Post: new stateboard/backboard is generated (9x9 board)
+*/
 const newBoard = () => {
     // Coordinate not exactly what you think it is.
     // To go South of board from top right you need to do +x and to go north -x and same for y +y to go right and -y to go left.
@@ -1093,7 +1091,7 @@ const generateAttack = (level) =>{
                 }
             }
         }
-        m_player2HitAccuracy.innerHTML = ((p2HitCount/p2MisslesFired)*100).toFixed(2) + "%"; //For Scoreboard     
+        m_player2HitAccuracy.innerHTML = ((p2HitCount/p2MisslesFired)*100).toFixed(2) + "%"; //For Scoreboard
     }
     else if(level === "hard"){
         let XStart = 0
@@ -1142,6 +1140,12 @@ const generateAttack = (level) =>{
     }
 }
 
+/*
+* Method: makeBoardChanges
+* Pre Conditions: Current game is running
+* Parameters: 'currentBoard', 'oppBoard', 'ships', 'row', 'col'
+* Post Conditions: Game continues, simply a method that saves code space
+*/
 function makeBoardChanges(currentBoard, oppBoard, ships, row, col){
     currentBoard[row][col].state = "Sunk";
     oppBoard[row][col].state = "Hit";
