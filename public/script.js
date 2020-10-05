@@ -80,6 +80,9 @@ multiPlayerMode.addEventListener("click", startMultiPlayerMode)
 * Post Conditions: Starts the single player mode, adds easy, medium, and hard mode options, and changes player IDs to "Player" and "AI"
 */
 function startSinglePlayerMode(){
+    document.querySelector("#instruction").innerText = "Single Player Mode"
+    document.getElementById("multiplayerMode").disabled = true;
+    document.getElementById("singleplayerMode").disabled = false;
     mode = "singlePlayer"
     document.getElementById('level').style.display = 'block'
     document.querySelector('#easy').addEventListener("click", startEasyMode)
@@ -130,6 +133,9 @@ function startHardMode(){
 * Post Conditions: Enables the display(s) on HTML and CSS to interact with the multiplayer mode of the game
 */
 function startMultiPlayerMode(){
+    document.querySelector("#instruction").innerText = "Multiplayer Player Mode"
+    document.getElementById("singleplayerMode").disabled = true;
+    document.getElementById("multiplayerMode").disabled = false;
     mode = "multiplayer"
     m_aiNameChange.innerHTML = "Player 2"
     document.getElementById('level').style.display = 'none'
@@ -663,7 +669,7 @@ const player1Hit = (x, y) => {
         displayboard(player2Board, "#game-grid-2");
         displayboard(player2OppBoard, "#game-grid-1");
     }
-    m_player1HitAccuracy.innerHTML = ((p1HitCount/p1MisslesFired)*100) + "%"; //For Scoreboard
+    m_player1HitAccuracy.innerHTML = ((p1HitCount/p1MisslesFired)*100).toFixed(2) + "%"; //For Scoreboard
 }
 
 /*
@@ -700,7 +706,7 @@ const player2Hit = (x, y) => {
         displayboard(player1Board, "#game-grid-1");
         displayboard(player1OppBoard, "#game-grid-2");
     }
-    m_player2HitAccuracy.innerHTML = ((p2HitCount/p2MisslesFired)*100) + "%"; //For Scoreboard
+    m_player2HitAccuracy.innerHTML = ((p2HitCount/p2MisslesFired)*100).toFixed(2) + "%"; //For Scoreboard
 }
 /*
 * Method: playerHit
@@ -744,7 +750,7 @@ const playerHit = (x, y) => {
             currentPhase = "p-turn";
         }
     }
-    m_player1HitAccuracy.innerHTML = ((p1HitCount/p1MisslesFired)*100) + "%"; //For Scoreboard
+    m_player1HitAccuracy.innerHTML = ((p1HitCount/p1MisslesFired)*100).toFixed(2) + "%"; //For Scoreboard
 }
 
 let mediumRowPastMove = -1
@@ -822,7 +828,7 @@ const generateAttack = (level) =>{
                 }
             }
         }
-        m_player2HitAccuracy.innerHTML = ((p2HitCount/p2MisslesFired)*100) + "%"; //For Scoreboard
+        m_player2HitAccuracy.innerHTML = ((p2HitCount/p2MisslesFired)*100).toFixed(2) + "%"; //For Scoreboard
     }
     else if(level === "medium"){
         //Check if the last move was a hit or miss
@@ -1087,7 +1093,7 @@ const generateAttack = (level) =>{
                 }
             }
         }
-        m_player2HitAccuracy.innerHTML = ((p2HitCount/p2MisslesFired)*100) + "%"; //For Scoreboard
+        m_player2HitAccuracy.innerHTML = ((p2HitCount/p2MisslesFired)*100).toFixed(2) + "%"; //For Scoreboard     
     }
     else if(level === "hard"){
         let XStart = 0
