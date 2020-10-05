@@ -776,7 +776,7 @@ const generateAttack = (level) =>{
     }
     else if(level === "medium"){
         //Check if the last move was a hit or miss
-        if((mediumRowPastMove === -1) || (mediumColPastMove === -1)){
+        if((mediumRowPastMove === -1) && (mediumColPastMove === -1)){
         //If last move was a miss, generate a random attack
             let maxBound = 8
             let minBound = 0
@@ -786,16 +786,20 @@ const generateAttack = (level) =>{
             do{
                 randomRowStart = Math.floor(Math.random()*(maxBound - minBound) + minBound)
                 randomColStart =  Math.floor(Math.random()*(maxBound - minBound) + minBound)
-                let state = computerOppBoard[randomRowStart][randomColStart].state
+                state = computerOppBoard[randomRowStart][randomColStart].state
                 
             }while(state === "Miss" || state === "Hit" || state === "Sunk")
             // Check if AI hits the ship
             p2MisslesFired += 1; //For Scoreboard
             m_player2MisslesFired.innerHTML = p2MisslesFired; //For Scoreboard
+            console.log("Last hit was a miss. This is the new attack")
+            console.log(randomRowStart)
+            console.log(randomColStart)
             if (playerBoard[randomRowStart][randomColStart].state === "Ship") {
                 //If this random attack is a hit save it to the past move
                 mediumRowPastMove = randomRowStart
                 mediumColPastMove = randomColStart
+                console.log("This was a HIT, save it to past move")
                 alert("AI HIT!!!!!")
                 p2HitCount += 1; //For Scoreboard
                 m_player2HitCount.innerHTML = p2HitCount; //For Scoreboard
@@ -825,6 +829,7 @@ const generateAttack = (level) =>{
                 // If the attack the was a miss, set the past move back to -1
                 alert("AI MISS")
                 p2MissCount += 1; //For Scoreboard
+                console.log("That was a miss, set past move back to -1")
                 m_player2MissCount.innerHTML = p2MissCount; //For Scoreboard
                 mediumRowPastMove = -1
                 mediumColPastMove = -1
@@ -849,9 +854,11 @@ const generateAttack = (level) =>{
             // Check up
             p2MisslesFired += 1; //For Scoreboard
             m_player2MisslesFired.innerHTML = p2MisslesFired; //For Scoreboard
+            console.log("Past move was a hit, checking the surrounding")
             if((mediumRowPastMove) > 0 && (playerBoard[mediumRowPastMove - 1][mediumColPastMove].state === "Ship")){
+                console.log("Up has a ship")
                 makeBoardChanges(playerBoard, computerOppBoard,playerShips, mediumRowPastMove - 1, mediumColPastMove);
-                mediumRowPastMove -= 1
+                mediumRowPastMove = mediumRowPastMove - 1
                 alert("AI HIT!!!!!")
                 p2HitCount += 1; //For Scoreboard
                 m_player2HitCount.innerHTML = p2HitCount; //For Scoreboard
@@ -878,7 +885,8 @@ const generateAttack = (level) =>{
             //Check right
             else if((mediumColPastMove) < 8 && (playerBoard[mediumRowPastMove][mediumColPastMove + 1].state === "Ship")){
                 makeBoardChanges(playerBoard, computerOppBoard,playerShips, mediumRowPastMove, mediumColPastMove + 1);
-                mediumColPastMove += 1
+                console.log("Right has a ship")
+                mediumColPastMove = mediumColPastMove + 1
                 alert("AI HIT!!!!!")
                 p2HitCount += 1; //For Scoreboard
                 m_player2HitCount.innerHTML = p2HitCount; //For Scoreboard
@@ -905,7 +913,8 @@ const generateAttack = (level) =>{
             //Check down
             else if((mediumRowPastMove) < 8 && (playerBoard[mediumRowPastMove + 1][mediumColPastMove].state === "Ship")){
                 makeBoardChanges(playerBoard, computerOppBoard,playerShips, mediumColPastMove + 1, mediumColPastMove);
-                mediumRowPastMove += 1
+                mediumRowPastMove = mediumColPastMove + 1
+                console.log("Down has a ship")
                 alert("AI HIT!!!!!")
                 p2HitCount += 1; //For Scoreboard
                 m_player2HitCount.innerHTML = p2HitCount; //For Scoreboard
@@ -932,7 +941,8 @@ const generateAttack = (level) =>{
             //Check left
             else if((mediumColPastMove) > 0 && (playerBoard[mediumRowPastMove][mediumColPastMove - 1].state === "Ship")){
                 makeBoardChanges(playerBoard, computerOppBoard,playerShips, mediumRowPastMove, mediumColPastMove - 1);
-                mediumColPastMove -= 1
+                mediumColPastMove = mediumColPastMove - 1
+                console.log("Left has a ship")
                 alert("AI HIT!!!!!")
                 p2HitCount += 1; //For Scoreboard
                 m_player2HitCount.innerHTML = p2HitCount; //For Scoreboard
@@ -958,26 +968,28 @@ const generateAttack = (level) =>{
             }
             // If there is no Ship arround, shoot randomly
             else{
-                let maxBound = 8
-                let minBound = 0
-                let randomRowStart = 0
-                let randomColStart = 0
+                let max = 8
+                let min = 0
+                let rowStart = 0
+                let colStart = 0
                 let state = ""
                 do{
-                    randomRowStart = Math.floor(Math.random()*(maxBound - minBound) + minBound)
-                    randomColStart =  Math.floor(Math.random()*(maxBound - minBound) + minBound)
-                    let state = computerOppBoard[randomRowStart][randomColStart].state
+                    rowStart = Math.floor(Math.random()*(max - min) + min)
+                    colStart =  Math.floor(Math.random()*(max - min) + min)
+                    state = computerOppBoard[rowStart][colStart].state
                     
                 }while(state === "Miss" || state === "Hit" || state === "Sunk")
                 // Check if AI hits the ship
-                if (playerBoard[randomRowStart][randomColStart].state === "Ship") {
+                console.log("Shoot randomly since there's no ships around")
+                if (playerBoard[rowStart][colStart].state === "Ship") {
+                    console.log("That random shoot was a hit")
                     //If this random attack is a hit save it to the past move
-                    mediumRowPastMove = randomRowStart
-                    mediumColPastMove = randomColStart
+                    mediumRowPastMove = rowStart
+                    mediumColPastMove = colStart
                     alert("AI HIT!!!!!")
                     p2HitCount += 1; //For Scoreboard
                     m_player2HitCount.innerHTML = p2HitCount; //For Scoreboard
-                    makeBoardChanges(playerBoard, computerOppBoard,playerShips, randomRowStart, randomColStart);
+                    makeBoardChanges(playerBoard, computerOppBoard,playerShips, rowStart, colStart);
                     // Print AI moves
                     displayboard(computerOppBoard, "#game-grid-1");
                     displayboard(computerBoard, "#game-grid-2")
@@ -1001,13 +1013,14 @@ const generateAttack = (level) =>{
                     
                 } else {
                     // If the attack the was a miss, set the past move back to -1
+                    console.log("That random shoot was a miss")
                     alert("AI MISS")
                     p2MissCount += 1; //For Scoreboard
                     m_player2MissCount.innerHTML = p2MissCount; //For Scoreboard
                     mediumRowPastMove = -1
                     mediumColPastMove = -1
 
-                    computerOppBoard[randomRowStart][randomColStart].state = "Miss";
+                    computerOppBoard[rowStart][colStart].state = "Miss";
                     displayboard(computerOppBoard, "#game-grid-1");
                     displayboard(computerBoard, "#game-grid-2")
                     document.querySelector("#instruction").innerText = "Press Enter Key To Skip"
