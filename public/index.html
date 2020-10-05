@@ -14,22 +14,37 @@
     <!-- <header>
         <h1 class="secondary-color centered">Battleship</h1>
     </header> -->
+
+    <audio id="click" src="audio/click.mp3"></audio>
+    <audio id="boom" src="audio/boom.mp3"></audio>
+    <audio id="bgm" src="audio/bgm.mp3"></audio>
+
+    <script>
+        function play(){
+            document.getElementById("click").play();
+        }
+        function bgmplay(){
+                document.getElementById("bgm").play();
+        }
+    </script>
+
+
     <div id="flexContainer">
         <div id="sideBar">
                 <!-- Multiplayer Mode  -->
-                <button id="multiplayerMode">Multiplayer</button>
+                <button id="multiplayerMode" onclick="play()">Multiplayer</button>
                 <!-- SinglePlayer Mode -->
-                <button id="singleplayerMode">Single Player</button>
+                <button id="singleplayerMode" onclick="play()">Single Player</button>
                 <div id="level" style="display: none;">
                         <br/>
-                        <button id=easy>Easy</button> 
-                        <button id=medium>Medium</button> 
-                        <button id=hard>Hard</button>
+                        <button id=easy onclick="play()">Easy</button> 
+                        <button id=medium onclick="play()">Medium</button> 
+                        <button id=hard onclick="play()">Hard</button>
                 </div>
                 <!-- Start Button -->
                 <br/>
                 <br/>
-                <button id="start">Start Game</button><br/><br/>
+                <button id="start" onclick="bgmplay()">Start Game</button><br/><br/>
                 <!-- Player Instructions Section -->
                 
                 <div id = "scoreboard" style="display: none;">
