@@ -139,4 +139,19 @@
         <h3>Pre Conditions: Space exists, called with .state </h3>
         <h3>Params: None</h3>
         <h3>Post Conditions: Setter for the values of the m_state. Modifies state based upon possible state values;</h3>
+
+        <h2>Method: playerHit</h2>
+        <h3>Pre Conditions: Game is running, currentPhase in 'p-turn'</h3>
+        <h3>Params: 'x': x-coordinate; 'y': y-coordinate</h3>
+        <h3>Post Conditions: Player either hits or misses, new board state is displayed, changes phase on miss</h3>
+
+        <h2>Method: generateAttack</h2>
+        <h3>Pre Conditions: Game is running, currentPhase in 'ai-turn'</h3>
+        <h3>Params: 'level': submitted by the user at the beginning of the game</h3>
+        <h3>Post Conditions: AI either hits or misses, new board state is displayed, changes phase on miss</h3>
+
+        <h2>Method: makeBoardChanges</h2>
+        <h3>Pre Conditions: Current game is running</h3>
+        <h3>Parameters: 'currentBoard', 'oppBoard', 'ships', 'row', 'col'</h3>
+        <h3>Post Conditions: Game continues, simply a method that saves code space</h3>
 </body>
