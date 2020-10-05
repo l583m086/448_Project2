@@ -80,7 +80,7 @@ multiPlayerMode.addEventListener("click", startMultiPlayerMode)
 * Post Conditions: Starts the single player mode, adds easy, medium, and hard mode options, and changes player IDs to "Player" and "AI"
 */
 function startSinglePlayerMode(){
-    document.querySelector("#instruction").innerText = "Single Player Mode"
+    document.querySelector("#instruction").innerText = "Single player Mode"
     document.getElementById("multiplayerMode").disabled = true;
     document.getElementById("singleplayerMode").disabled = false;
     mode = "singlePlayer"
@@ -133,7 +133,7 @@ function startHardMode(){
 * Post Conditions: Enables the display(s) on HTML and CSS to interact with the multiplayer mode of the game
 */
 function startMultiPlayerMode(){
-    document.querySelector("#instruction").innerText = "Multiplayer Player Mode"
+    document.querySelector("#instruction").innerText = "Multiplayer Mode"
     document.getElementById("singleplayerMode").disabled = true;
     document.getElementById("multiplayerMode").disabled = false;
     mode = "multiplayer"
@@ -718,7 +718,7 @@ const playerHit = (x, y) => {
     p1MisslesFired += 1; //For Scoreboard
     m_player1MisslesFired.innerHTML = p1MisslesFired; //For Scoreboard
     if (computerBoard[y][x].state === "Ship") {
-        alert("HIT!!!!!");
+        alert("Player HIT!!!!!");
         p1HitCount += 1; //For Scoreboard
         m_player1HitCount.innerHTML = p1HitCount; //For Scoreboard
         computerBoard[y][x].state = "Sunk";
@@ -735,7 +735,7 @@ const playerHit = (x, y) => {
         generateAttack(level)
     } else {
         if (computerBoard[y][x].state !== "Sunk") {
-            alert("MISS");
+            alert("Player MISS");
             p1MissCount += 1; //For Scoreboard
             m_player1MissCount.innerHTML = p1MissCount; //For Scoreboard
             playerOppBoard[y][x].state = "Miss";
