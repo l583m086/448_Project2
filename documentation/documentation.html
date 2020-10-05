@@ -155,6 +155,11 @@
         <h3>Parameters: 'currentBoard', 'oppBoard', 'ships', 'row', 'col'</h3>
         <h3>Post Conditions: Game continues, simply a method that saves code space</h3>
 
+        <h2>Method: startMultiPlayerMode</h2>
+        <h3>Pre Conditions: None</h3>
+        <h3>Parameters: None</h3>
+        <h3>Post Conditions: Enables the display(s) on HTML and CSS to interact with the multiplayer mode of the game</h3>
+
         <h2>Method: startMultiplayerGame</h2>
         <h3>Pre Conditions: None</h3>
         <h3>Parameters: None</h3>
@@ -164,6 +169,21 @@
         <h3>Pre Conditions: None</h3>
         <h3>Parameters: None</h3>
         <h3>Post Conditions: Checks for different phases in multiplayer including game over</h3>
+
+        <h2>Method: startSinglePlayerMode</h2>
+        <h3>Pre Conditions: None</h3>
+        <h3>Parameters: None</h3>
+        <h3>Post Conditions: Starts the single player mode, adds easy, medium, and hard mode options, and changes player IDs to "Player" and "AI"</h3>
+
+        <h2>Method: startSinglePlayerGame</h2>
+        <h3>Pre Conditions: None</h3>
+        <h3>Parameters: None</h3>
+        <h3>Post Conditions: Starts game if not started, and changes the phase to ship placement, displays board, resets game if game-over phase occurs</h3>
+
+        <h2>Method: single</h2>
+        <h3>Pre Conditions: None</h3>
+        <h3>Parameters: None</h3>
+        <h3>Post Conditions: Checks for different phases in singleplayer mode including game over</h3>
 
         <h2>Method: startEasyMode</h2>
         <h3>Pre Conditions: 'generateAttack' must be active</h3>
@@ -179,14 +199,4 @@
         <h3>Pre Conditions: 'generateAttack' must be active</h3>
         <h3>Parameters: none</h3>
         <h3>Post Conditions: AI is placed on hard difficulty</h3>
-
-        <h2>Method: startSingleplayerGame</h2>
-        <h3>Pre Conditions: None</h3>
-        <h3>Parameters: None</h3>
-        <h3>Post Conditions: Starts game if not started, and changes the phase to ship placement, displays board, resets game if game-over phase occurs</h3>
-
-        <h2>Method: single</h2>
-        <h3>Pre Conditions: None</h3>
-        <h3>Parameters: None</h3>
-        <h3>Post Conditions: Checks for different phases in singleplayer mode including game over</h3>
 </body>
