@@ -58,17 +58,8 @@ const m_player2HitAccuracy = document.getElementById("player2HitAccuracy");
 const m_aiNameChange = document.getElementById("aiName");
 
 
-
-
-
 // End Global variables
 
-/*
-* Method: newBoard
-* Pre: None
-* Params: None
-* Post: new stateboard/backboard is generated (9x9 board)
-*/
 
 singlePlayerMode.addEventListener("click", startSinglePlayerMode)
 multiPlayerMode.addEventListener("click", startMultiPlayerMode)
@@ -143,6 +134,13 @@ function startMultiPlayerMode(){
     document.querySelector('#player2Id').innerText = "Player2"
     startGameButton.addEventListener("click", startMultiplayerGame);
 }
+
+/*
+* Method: newBoard
+* Pre: None
+* Params: None
+* Post: new stateboard/backboard is generated (9x9 board)
+*/
 const newBoard = () => {
     // Coordinate not exactly what you think it is.
     // To go South of board from top right you need to do +x and to go north -x and same for y +y to go right and -y to go left.
