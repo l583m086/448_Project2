@@ -1025,8 +1025,8 @@ const generateAttack = (level) =>{
         makeBoardChanges(playerBoard, computerOppBoard,playerShips, XStart, YStart);
         p2HitCount += 1; //For Scoreboard
         m_player2HitCount.innerHTML = p2HitCount; //For Scoreboard
-        m_player1Score.innerHTML = p1Ships - (player1Ships.sunkShips); //For Scoreboard
-        m_player2ShipsSunk.innerHTML = player1Ships.sunkShips; //For Scoreboard
+        m_player1Score.innerHTML = p1Ships - (playerShips.sunkShips); //For Scoreboard
+        m_player2ShipsSunk.innerHTML = playerShips.sunkShips; //For Scoreboard
         m_player2HitAccuracy.innerHTML = "100%"; //For Scoreboard
         // Print AI moves
         displayboard(computerOppBoard, "#game-grid-1");
