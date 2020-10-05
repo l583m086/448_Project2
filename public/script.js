@@ -824,6 +824,8 @@ const generateAttack = (level) =>{
             } else {
                 // If the attack the was a miss, set the past move back to -1
                 alert("AI MISS")
+                p2MissCount += 1; //For Scoreboard
+                m_player2MissCount.innerHTML = p2MissCount; //For Scoreboard
                 mediumRowPastMove = -1
                 mediumColPastMove = -1
                 computerOppBoard[randomRowStart][randomColStart].state = "Miss";
@@ -845,6 +847,8 @@ const generateAttack = (level) =>{
         else{
             // If past move was a hit, check around if there is another ship space
             // Check up
+            p2MisslesFired += 1; //For Scoreboard
+            m_player2MisslesFired.innerHTML = p2MisslesFired; //For Scoreboard
             if((mediumRowPastMove) > 0 && (playerBoard[mediumRowPastMove - 1][mediumColPastMove].state === "Ship")){
                 makeBoardChanges(playerBoard, computerOppBoard,playerShips, mediumRowPastMove - 1, mediumColPastMove);
                 mediumRowPastMove -= 1
