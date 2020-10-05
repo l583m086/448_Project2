@@ -73,6 +73,12 @@ const m_aiNameChange = document.getElementById("aiName");
 singlePlayerMode.addEventListener("click", startSinglePlayerMode)
 multiPlayerMode.addEventListener("click", startMultiPlayerMode)
 
+/*
+* Method: startSinglePlayerMode
+* Pre Conditions: None
+* Parameters: None
+* Post Conditions: Starts the single player mode, adds easy, medium, and hard mode options, and changes player IDs to "Player" and "AI"
+*/
 function startSinglePlayerMode(){
     mode = "singlePlayer"
     document.getElementById('level').style.display = 'block'
@@ -84,20 +90,45 @@ function startSinglePlayerMode(){
     m_aiNameChange.innerHTML = "AI"
 }
 
+/*
+* Method: startEasyMode
+* Pre Conditions: 'generateAttack' must be active
+* Parameters: none
+* Post Conditions: AI is placed on easy difficulty
+*/
 function startEasyMode(){
     level = "easy"
     startGameButton.addEventListener("click", startSinglePlayerGame)
 }
 
+/*
+* Method: startEasyMode
+* Pre Conditions: 'generateAttack' must be active
+* Parameters: none
+* Post Conditions: AI is placed on medium difficulty
+*/
 function startMediumMode(){
     level = "medium"
     startGameButton.addEventListener("click", startSinglePlayerGame)
 }
 
+/*
+* Method: startEasyMode
+* Pre Conditions: 'generateAttack' must be active
+* Parameters: none
+* Post Conditions: AI is placed on hard difficulty
+*/
 function startHardMode(){
     level = "hard"
     startGameButton.addEventListener("click", startSinglePlayerGame)
 }
+
+/*
+* Method: startMultiPlayerMode
+* Pre Conditions: None
+* Parameters: None
+* Post Conditions: Enables the display(s) on HTML and CSS to interact with the multiplayer mode of the game
+*/
 function startMultiPlayerMode(){
     mode = "multiplayer"
     m_aiNameChange.innerHTML = "Player 2"
@@ -1106,7 +1137,12 @@ function makeBoardChanges(currentBoard, oppBoard, ships, row, col){
     return;
 }
 
-
+/*
+* Method: startSinglePlayerGame
+* Pre Conditions: None
+* Parameters: None
+* Post Conditions: Starts game if not started, and changes the phase to ship placement, displays board, resets game if game-over phase occurs
+*/
 const startSinglePlayerGame = () => {
     if(currentPhase === "starting"){
         document.querySelector("#instruction").innerText = "Use Left Click to place ship"
@@ -1179,6 +1215,13 @@ const startMultiplayerGame = () => {
         alert("You are mid-game, cannot start");
     }
 }
+
+/*
+* Method: multi
+* Pre Conditions: None
+* Parameters: None
+* Post Conditions: Checks for different phases in multiplayer including game over
+*/
 const multi = () =>{
     let gameboard1 = document.getElementById("game-grid-1");
             for (let i = 0; i < gameboard1.rows.length - 1; i++) {
@@ -1221,6 +1264,12 @@ const multi = () =>{
             }
 }
 
+/*
+* Method: single
+* Pre Conditions: None
+* Parameters: None
+* Post Conditions: Checks for different phases in singleplayer mode including game over
+*/
 const single = () =>{
     checkGameOver()
         let gameboard1 = document.getElementById("game-grid-1");
