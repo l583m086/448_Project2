@@ -81,7 +81,7 @@ function startSinglePlayerMode(){
     document.querySelector('#hard').addEventListener("click", startHardMode)
     document.querySelector('#player1Id').innerText = "Player"
     document.querySelector('#player2Id').innerText = "AI"
-    m_aiNameChange.innerHTML = "AI";
+    m_aiNameChange.innerHTML = "AI"
 }
 
 function startEasyMode(){
@@ -100,6 +100,7 @@ function startHardMode(){
 }
 function startMultiPlayerMode(){
     mode = "multiplayer"
+    m_aiNameChange.innerHTML = "Player 2"
     document.getElementById('level').style.display = 'none'
     document.querySelector('#player1Id').innerText = "Player1"
     document.querySelector('#player2Id').innerText = "Player2"
