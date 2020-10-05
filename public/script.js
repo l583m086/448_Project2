@@ -1022,9 +1022,7 @@ const generateAttack = (level) =>{
         m_player2MisslesFired.innerHTML = p2MisslesFired; //For Scoreboard
         // Check if AI hits the ship
         alert("AI HIT!!!!!")
-<<<<<<< HEAD
         makeBoardChanges(playerBoard, computerOppBoard,playerShips, XStart, YStart);
-=======
         p2HitCount += 1; //For Scoreboard
         m_player2HitCount.innerHTML = p2HitCount; //For Scoreboard
         playerBoard[XStart][YStart].state = "Sunk";
@@ -1033,7 +1031,6 @@ const generateAttack = (level) =>{
         m_player1Score.innerHTML = p1Ships - (player1Ships.sunkShips); //For Scoreboard
         m_player2ShipsSunk.innerHTML = player1Ships.sunkShips; //For Scoreboard
         m_player2HitAccuracy.innerHTML = "100%"; //For Scoreboard
->>>>>>> a440954fbe3e5684d6a2933ee24ad6f990898703
         // Print AI moves
         displayboard(computerOppBoard, "#game-grid-1");
         if(playerShips.allSunk()){
