@@ -22,6 +22,10 @@
     /*transition: .5s ease;*/
 }
 
+#start:hover{
+    background-color: lightgreen;
+}
+
 #scoreboard{
     margin-top: 10px;
     font-size: 16px;
@@ -41,6 +45,10 @@
     /*transition: .5s ease;*/
 }
 
+#singleplayerMode:hover{
+    background-color: lightskyblue;
+}
+
 #easy {
     background-color: green;
     color: white;
@@ -50,6 +58,10 @@
     cursor: pointer;
     border-radius: 5px;
     /*transition: .5s ease;*/
+}
+
+#easy:hover{
+    background-color: lightgreen;
 }
 
 #medium {
@@ -63,6 +75,10 @@
     /*transition: .5s ease;*/
 }
 
+#medium:hover{
+    background-color: goldenrod;
+}
+
 #hard {
     background-color: darkred;
     color: white;
@@ -74,6 +90,10 @@
     /*transition: .5s ease;*/
 }
 
+#hard:hover{
+    background-color: crimson;
+}
+
 #multiplayerMode{
     background-color: rgb(0, 110, 255);
     color: white;
@@ -83,6 +103,10 @@
     cursor: pointer;
     border-radius: 5px;
     /*transition: .5s ease;*/
+}
+
+#multiplayerMode:hover{
+    background-color: lightskyblue;
 }
 
 #sideBar {
