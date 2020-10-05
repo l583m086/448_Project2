@@ -1093,7 +1093,7 @@ const generateAttack = (level) =>{
                 }
             }
         }
-        m_player2HitAccuracy.innerHTML = ((p2HitCount/p2MisslesFired)*100).toFixed(2) + "%"; //For Scoreboard     
+        m_player2HitAccuracy.innerHTML = ((p2HitCount/p2MisslesFired)*100).toFixed(2) + "%"; //For Scoreboard
     }
     else if(level === "hard"){
         let XStart = 0
@@ -1142,6 +1142,12 @@ const generateAttack = (level) =>{
     }
 }
 
+/*
+* Method: makeBoardChanges
+* Pre Conditions: Current game is running
+* Parameters: 'currentBoard', 'oppBoard', 'ships', 'row', 'col'
+* Post Conditions: Game continues, simply a method that saves code space
+*/
 function makeBoardChanges(currentBoard, oppBoard, ships, row, col){
     currentBoard[row][col].state = "Sunk";
     oppBoard[row][col].state = "Hit";
