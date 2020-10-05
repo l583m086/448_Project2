@@ -750,6 +750,12 @@ const playerHit = (x, y) => {
 let mediumRowPastMove = -1
 let mediumColPastMove = -1
 
+/*
+* Method: generateAttack
+* Pre Conditions: Game is running, currentPhase in 'ai-turn'
+* Params: 'level': submitted by the user at the beginning of the game
+* Post Conditions: AI either hits or misses, new board state is displayed, changes phase on miss
+*/
 const generateAttack = (level) =>{
     console.log("generate attack get called")
     displayboard(computerBoard, '#game-grid-2')
