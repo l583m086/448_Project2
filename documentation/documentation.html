@@ -199,4 +199,14 @@
         <h3>Pre Conditions: 'generateAttack' must be active</h3>
         <h3>Parameters: none</h3>
         <h3>Post Conditions: AI is placed on hard difficulty</h3>
+
+        <h2>Method: singlePlayerPlaceShip</h2>
+        <h3>Pre Conditions: Checks to make sure ships are not overlapping</h3>
+        <h3>Parameters: board, x, y</h3>
+        <h3>Post Conditions: Allows player 1 to place ships in the single player mode</h3>
+
+        <h2>Method: autoGenerateShip</h2>
+        <h3>Pre Conditions: Checks for a valid starting place and a valid ship</h3>
+        <h3>Parameters: board, numberOfShips</h3>
+        <h3>Post Conditions: If the starting place and ship are valid, the ship is added to the ship container for the AI in single player mode</h3>
 </body>
