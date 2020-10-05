@@ -55,7 +55,7 @@ const m_player1MisslesFired = document.getElementById("player1MisslesFired");
 const m_player2MisslesFired = document.getElementById("player2MisslesFired");
 const m_player1HitAccuracy = document.getElementById("player1HitAccuracy");
 const m_player2HitAccuracy = document.getElementById("player2HitAccuracy");
-
+const m_aiNameChange = document.getElementById("aiName");
 
 
 
@@ -81,7 +81,7 @@ function startSinglePlayerMode(){
     document.querySelector('#hard').addEventListener("click", startHardMode)
     document.querySelector('#player1Id').innerText = "Player"
     document.querySelector('#player2Id').innerText = "AI"
-    
+    m_aiNameChange.innerHTML = "AI";
 }
 
 function startEasyMode(){
