@@ -966,8 +966,8 @@ const generateAttack = (level) =>{
             }
             //Check down
             else if((mediumRowPastMove) < 8 && (playerBoard[mediumRowPastMove + 1][mediumColPastMove].state === "Ship")){
-                makeBoardChanges(playerBoard, computerOppBoard,playerShips, mediumColPastMove + 1, mediumColPastMove);
-                mediumRowPastMove = mediumColPastMove + 1
+                makeBoardChanges(playerBoard, computerOppBoard,playerShips, mediumRowPastMove + 1, mediumColPastMove);
+                mediumRowPastMove = mediumRowPastMove + 1
                 console.log("Down has a ship")
                 alert("AI HIT!!!!!")
                 p2HitCount += 1; //For Scoreboard
